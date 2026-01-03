@@ -183,17 +183,51 @@ function getParkingFacilities($jam_buka, $jam_tutup) {
     <div class="dashboard-container">
 
         <!-- SIDEBAR -->
-        <aside class="dashboard-sidebar">
-            <ul class="sidebar-menu">
-                <li><a href="#" class="active"><i class="fas fa-map-marked-alt"></i> Find Parking</a></li>
-                <li><a href="#"><i class="fas fa-history"></i> My Booking</a></li>
-                <li><a href="#"><i class="fas fa-wallet"></i> Wallet</a></li>
-                <li><a href="#"><i class="fas fa-user"></i> Profile</a></li>
-            </ul>
+        <aside class="dashboard-sidebar" id="sidebar">
+            <!-- Toggle Button (Centered on Edge) -->
+            <button class="sidebar-toggle-edge" id="sidebarToggle" aria-label="Toggle Sidebar">
+                <i class="fas fa-chevron-left"></i>
+            </button>
 
-            <div class="sidebar-logout">
-                <a href="<?= BASEURL ?>/logout.php">
-                    <i class="fas fa-sign-out-alt"></i> Logout
+            <!-- Main Navigation -->
+            <nav class="sidebar-nav">
+                <ul class="sidebar-menu">
+                    <li>
+                        <a href="<?= BASEURL ?>/pages/dashboard.php" class="active" data-tooltip="Find Parking">
+                            <i class="fas fa-map-marked-alt"></i>
+                            <span>Find Parking</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="menu-disabled" data-tooltip="My Ticket">
+                            <i class="fas fa-ticket-alt"></i>
+                            <span>My Ticket</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="menu-disabled" data-tooltip="History">
+                            <i class="fas fa-history"></i>
+                            <span>History</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="menu-disabled" data-tooltip="Wallet">
+                            <i class="fas fa-wallet"></i>
+                            <span>Wallet</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Bottom Section (Settings + Logout) -->
+            <div class="sidebar-bottom">
+                <a href="#" class="menu-disabled" data-tooltip="Settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+                <a href="<?= BASEURL ?>/logout.php" class="logout-link" data-tooltip="Logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
                 </a>
             </div>
         </aside>
@@ -269,6 +303,7 @@ function getParkingFacilities($jam_buka, $jam_tutup) {
     </script>
 
     <!-- Application Scripts -->
+    <script src="<?= BASEURL ?>/assets/js/sidebar-toggle.js"></script>
     <script src="<?= BASEURL ?>/assets/js/dashboard-map.js"></script>
     <script src="<?= BASEURL ?>/assets/js/booking-modal.js"></script>
     <script src="<?= BASEURL ?>/assets/js/dashboard-card-interaction.js"></script>
