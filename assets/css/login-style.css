@@ -70,6 +70,27 @@ h1 {
   font-size: 14px;
 }
 
+/* ALERT MESSAGES */
+.alert-error {
+  background: #fee;
+  border: 1px solid #fcc;
+  color: #c33;
+  padding: 12px 14px;
+  border-radius: 8px;
+  margin-bottom: 18px;
+  font-size: 13px;
+}
+
+.alert-success {
+  background: #efe;
+  border: 1px solid #cfc;
+  color: #3c3;
+  padding: 12px 14px;
+  border-radius: 8px;
+  margin-bottom: 18px;
+  font-size: 13px;
+}
+
 /* FORM */
 label {
   font-size: 13px;
