@@ -1,86 +1,88 @@
 <?php
+// TAMPILKAN ERROR (DEV ONLY)
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
 require_once __DIR__ . '/../config/app.php';
 require_once __DIR__ . '/../config/database.php';
 
 session_start();
 
-// Pastikan POST
+/* ================= VALIDASI METHOD ================= */
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: ' . BASEURL . '/pages/register.php');
     exit;
 }
 
-// Ambil input
-$nama     = trim($_POST['username'] ?? '');
-$email    = trim($_POST['email'] ?? '');
-$password = $_POST['password'] ?? '';
-$confirm  = $_POST['confirm_password'] ?? '';
-$phone    = trim($_POST['phone'] ?? '');
+/* ================= AMBIL INPUT ================= */
+$nama             = trim($_POST['nama'] ?? '');
+$email            = trim($_POST['email'] ?? '');
+$password         = $_POST['password'] ?? '';
+$confirm_password = $_POST['confirm_password'] ?? '';
+$no_hp            = trim($_POST['no_hp'] ?? '');
 
-// ================= VALIDASI =================
-if ($nama === '' || $email === '' || $password === '' || $confirm === '' || $phone === '') {
-    die('❌ Semua field wajib diisi.');
+/* ================= VALIDASI ================= */
+if ($nama === '' || $email === '' || $password === '') {
+    $_SESSION['error'] = 'Semua field wajib diisi';
+    header('Location: ' . BASEURL . '/pages/register.php');
+    exit;
 }
 
-if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    die('❌ Format email tidak valid.');
+if ($password !== $confirm_password) {
+    $_SESSION['error'] = 'Password dan konfirmasi password tidak cocok';
+    header('Location: ' . BASEURL . '/pages/register.php');
+    exit;
 }
 
-if (strlen($password) < 8) {
-    die('❌ Password minimal 8 karakter.');
+if (strlen($password) < 6) {
+    $_SESSION['error'] = 'Password minimal 6 karakter';
+    header('Location: ' . BASEURL . '/pages/register.php');
+    exit;
 }
 
-if ($password !== $confirm) {
-    die('❌ Password dan konfirmasi tidak sama.');
-}
-
+/* ================= PROSES DATABASE ================= */
 try {
     $pdo = getDBConnection();
 
-    // Cek email sudah ada
-    $cek = $pdo->prepare("
-        SELECT id_pengguna 
-        FROM data_pengguna 
-        WHERE email_pengguna = :email
-        LIMIT 1
-    ");
-    $cek->execute(['email' => $email]);
+    // Cek email sudah terdaftar
+    $stmt = $pdo->prepare(
+        "SELECT id_pengguna FROM data_pengguna WHERE email_pengguna = ? LIMIT 1"
+    );
+    $stmt->execute([$email]);
 
-    if ($cek->fetch()) {
-        die('❌ Email sudah terdaftar.');
+    if ($stmt->fetch()) {
+        $_SESSION['error'] = 'Email sudah terdaftar';
+        header('Location: ' . BASEURL . '/pages/register.php');
+        exit;
     }
 
-    // HASH PASSWORD (WAJIB)
+    // Hash password
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-    // INSERT USER BARU (ROLE USER = 1)
-    $insert = $pdo->prepare("
+    // Insert user baru (role default = 1 / user)
+    $stmt = $pdo->prepare("
         INSERT INTO data_pengguna 
-        (role_pengguna, nama_pengguna, email_pengguna, password_pengguna, noHp_pengguna)
+            (role_pengguna, nama_pengguna, email_pengguna, password_pengguna, noHp_pengguna)
         VALUES 
-        (1, :nama, :email, :password, :phone)
+            (1, ?, ?, ?, ?)
     ");
-
-    $insert->execute([
-        'nama'     => $nama,
-        'email'    => $email,
-        'password' => $hashedPassword,
-        'phone'    => $phone
+    $stmt->execute([
+        $nama,
+        $email,
+        $hashedPassword,
+        $no_hp
     ]);
 
-    // AUTO LOGIN
-    $_SESSION['user'] = [
-        'id_pengguna'   => $pdo->lastInsertId(),
-        'nama_pengguna' => $nama,
-        'email'         => $email,
-        'role'          => 'user'
-    ];
-
-    // REDIRECT
-    header('Location: ' . BASEURL . '/index.php');
+    $_SESSION['success'] = 'Registrasi berhasil! Silakan login.';
+    header('Location: ' . BASEURL . '/pages/login.php');
     exit;
 
 } catch (PDOException $e) {
-    // DEBUG (hapus saat production)
-    die('❌ Database error: ' . $e->getMessage());
+
+    // LOG ERROR (jangan tampilkan ke user di production)
+    error_log('REGISTER ERROR: ' . $e->getMessage());
+
+    $_SESSION['error'] = 'Terjadi kesalahan sistem. Silakan coba lagi.';
+    header('Location: ' . BASEURL . '/pages/register.php');
+    exit;
 }
