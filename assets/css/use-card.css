@@ -1,0 +1,92 @@
+/* =========================================================
+   SECTION: MORE WAYS TO USE SPARK
+========================================================= */
+
+.use-spark {
+    padding: 100px 0;
+    background-color: var(--spark-dark);
+}
+
+.use-spark-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 40px;
+}
+
+/* HEADER */
+.use-spark-header {
+    max-width: 720px;
+    margin-bottom: 80px;
+}
+
+.use-spark-header h2 {
+    font-size: 48px;
+    font-weight: 500;
+    margin-bottom: 16px;
+}
+
+.use-spark-header p {
+    font-size: 16px;
+    line-height: 1.7;
+    color: #d0d0d0;
+}
+
+/* CONTENT */
+.use-spark-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 80px;
+}
+
+/* LEFT TEXT */
+.use-spark-text {
+    max-width: 520px;
+}
+
+.use-spark-text h3 {
+    font-size: 40px;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+
+.use-spark-text p {
+    font-size: 16px;
+    line-height: 1.7;
+    color: #d0d0d0;
+    margin-bottom: 32px;
+}
+
+.use-spark-actions {
+    display: flex;
+    gap: 20px;
+}
+
+/* RIGHT IMAGE */
+.use-spark-image {
+    width: 560px;
+    height: 420px;
+    flex-shrink: 0;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.35);
+}
+
+.use-spark-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+/* =========================================================
+   USE SPARK - ALTERNATE (REVERSE)
+========================================================= */
+
+.use-spark.alt {
+    padding-top: 0; /* biar rapat antar section */
+}
+
+.use-spark-content.reverse {
+    flex-direction: row;
+}

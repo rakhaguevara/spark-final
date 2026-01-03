@@ -1,0 +1,364 @@
+:root {
+    --bookpark-height: 550px; /* tinggal ubah angka ini */
+}
+/* =========================================
+   BOOK PARK PAGE – FINAL STYLED VERSION
+========================================= */
+
+.bookpark-page {
+    background: radial-gradient(circle at top left, #262626 0%, #1f1f1f 60%);
+    padding: 80px 20px 0 0;
+    min-height: 100vh;
+}
+
+.bookpark-container {
+    max-width: 1400px;
+    margin: auto;
+    padding: 0 20px;
+}
+
+/* ================= HEADER ================= */
+
+.bookpark-header {
+    max-width: 720px;
+    margin-bottom: 58px;
+}
+
+.bookpark-label {
+    color: #ffe100;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+}
+
+.bookpark-header h1 {
+    font-size: 42px;
+    margin: 12px 0;
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.bookpark-header p {
+    color: #cfcfcf;
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+/* ================= CONTENT ================= */
+
+.bookpark-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+}
+
+/* ================= LEFT LIST ================= */
+
+.bookpark-list {
+    background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
+    border-radius: 24px;
+    padding: 24px;
+    max-height: var(--bookpark-height);
+    overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+}
+
+/* Scrollbar */
+.bookpark-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.bookpark-list::-webkit-scrollbar-track {
+    background: #eee;
+    border-radius: 10px;
+}
+
+.bookpark-list::-webkit-scrollbar-thumb {
+    background: #ffe100;
+    border-radius: 10px;
+}
+
+/* Empty */
+.bookpark-empty {
+    text-align: center;
+    padding: 64px 24px;
+    color: #888;
+}
+
+/* ================= CARD ================= */
+
+.bookpark-card {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 18px;
+    display: flex;
+    gap: 18px;
+    margin-bottom: 24px;
+    border: 1px solid #eee;
+    transition: box-shadow .3s ease, transform .3s ease;
+    cursor: pointer;
+}
+
+.bookpark-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 36px rgba(0,0,0,0.14);
+}
+
+.bookpark-card:last-child {
+    margin-bottom: 0;
+}
+
+/* ================= IMAGE ================= */
+
+.bookpark-card-image {
+    position: relative;
+    width: 160px;
+    height: 230px;
+    border-radius: 16px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.bookpark-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform .4s ease;
+}
+
+.bookpark-card:hover .bookpark-card-image img {
+    transform: scale(1.05);
+}
+
+/* ================= BADGES ================= */
+
+.bookpark-badge-available,
+.bookpark-badge-full {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    padding: 4px 10px;
+    font-size: 10px;
+    font-weight: 600;
+    border-radius: 6px;
+    color: #fff;
+    backdrop-filter: blur(6px);
+}
+
+.bookpark-badge-available {
+    background: rgba(76, 175, 80, 0.95);
+}
+
+.bookpark-badge-full {
+    background: rgba(244, 67, 54, 0.95);
+}
+
+/* ================= INFO ================= */
+
+.bookpark-card-info {
+    flex: 1;
+}
+
+.bookpark-card-info h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: #1e1e1e;
+    margin-bottom: 6px;
+}
+
+.bookpark-address {
+    font-size: 13px;
+    color: #666;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 10px;
+}
+
+.bookpark-address::before {
+    content: "📍";
+}
+
+.bookpark-facilities {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.bookpark-facilities li {
+    background: #fafafa;
+    border: 1px solid #eee;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    color: #555;
+    font-weight: 500;
+}
+
+.bookpark-rating {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 6px;
+}
+
+.bookpark-rating span {
+    font-size: 12px;
+    color: #777;
+}
+
+.bookpark-price {
+    font-size: 17px;
+    font-weight: 700;
+    color: #ffe100;
+    margin-bottom: 6px;
+}
+
+.bookpark-time {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 12px;
+}
+
+/* ================= BUTTONS ================= */
+
+.bookpark-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.bookpark-btn-primary,
+.bookpark-btn-outline,
+.bookpark-btn-disabled {
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    text-align: center;
+    transition: all .3s ease;
+}
+
+.bookpark-btn-primary {
+    background: #ffe100;
+    color: #1e1e1e;
+}
+
+.bookpark-btn-primary:hover {
+    background: #e6ca00;
+    box-shadow: 0 6px 18px rgba(255,225,0,0.4);
+}
+
+.bookpark-btn-outline {
+    border: 2px solid #ddd;
+    color: #1e1e1e;
+}
+
+.bookpark-btn-outline:hover {
+    background: #ffe100;
+}
+
+.bookpark-btn-disabled {
+    background: #ccc;
+    color: #666;
+    cursor: not-allowed;
+}
+
+/* ================= MAP ================= */
+
+.bookpark-map-card {
+    background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
+    border-radius: 24px;
+    height: var(--bookpark-height);
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+}
+
+#bookpark-map {
+    width: 100%;
+    height: 100%;
+}
+
+/* Leaflet popup */
+.leaflet-popup-content-wrapper {
+    border-radius: 14px;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.2);
+}
+
+
+/* ================================
+   CUSTOM SCROLLBAR – SLIM & CLEAN
+================================ */
+
+.bookpark-list {
+    scrollbar-width: thin;              /* Firefox */
+    scrollbar-color: #ffe100 transparent;
+}
+
+/* Chrome, Edge, Safari */
+.bookpark-list::-webkit-scrollbar {
+    width: 4px;       
+    height: 2px;                  /* SUPER RAMPING */
+}
+
+.bookpark-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.bookpark-list::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 225, 0, 0.9);
+    border-radius: 999px;
+}
+
+.bookpark-list::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 200, 0, 1);
+}
+
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 992px) {
+    .bookpark-container {
+        padding: 0 20px;
+    }
+
+    .bookpark-content {
+        grid-template-columns: 1fr;
+    }
+
+    .bookpark-map-card {
+        height: 400px;
+    }
+
+    .bookpark-header h1 {
+        font-size: 32px;
+    }
+}
+
+@media (max-width: 576px) {
+    .bookpark-page {
+        padding: 48px 0;
+    }
+
+    .bookpark-card {
+        flex-direction: column;
+    }
+
+    .bookpark-card-image {
+        width: 100%;
+        height: 200px;
+    }
+
+    .bookpark-actions {
+        flex-direction: column;
+    }
+
+    .bookpark-btn-primary,
+    .bookpark-btn-outline {
+        width: 100%;
+    }
+}

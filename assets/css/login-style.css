@@ -1,0 +1,358 @@
+/* =========================================================
+   GLOBAL RESET
+========================================================= */
+* {
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  margin: 0;
+  background: #ffffff;
+}
+
+/* =========================================================
+   LAYOUT
+========================================================= */
+.login-container {
+  display: flex;
+  height: 100vh;
+  padding: 8px;
+  gap: 8px;
+}
+
+/* =========================================================
+   LEFT SIDE (FORM)
+========================================================= */
+.login-left {
+  width: 50%;
+  padding-left: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-box {
+  width: 420px;
+}
+
+/* SWITCH */
+.login-switch {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.login-switch button {
+  padding: 6px 16px;
+  border-radius: 20px;
+  border: 1px solid #ddd;
+  background: #ffffff;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.login-switch .active {
+  background: #111;
+  color: #fff;
+  border-color: #111;
+}
+
+/* TEXT */
+h1 {
+  font-size: 28px;
+  margin-bottom: 6px;
+}
+
+.subtitle {
+  color: #777;
+  margin-bottom: 28px;
+  font-size: 14px;
+}
+
+/* FORM */
+label {
+  font-size: 13px;
+  margin-bottom: 6px;
+  display: block;
+}
+
+input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-bottom: 18px;
+  font-size: 14px;
+}
+
+.password-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.password-row a {
+  font-size: 12px;
+  text-decoration: none;
+  color: #111;
+}
+
+/* BUTTONS */
+.btn-primary {
+  width: 100%;
+  padding: 12px;
+  background: #2b2b2b;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-bottom: 18px;
+}
+
+.divider {
+  text-align: center;
+  color: #aaa;
+  font-size: 12px;
+  margin: 14px 0;
+}
+
+.btn-outline {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background: #ffffff;
+  cursor: pointer;
+  margin-bottom: 10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.btn-outline img {
+  width: 18px;
+  height: 18px;
+}
+
+.signup-text {
+  margin-top: 22px;
+  font-size: 13px;
+  text-align: center;
+}
+
+.signup-text a {
+  font-weight: 600;
+  color: #111;
+  text-decoration: none;
+}
+
+/* =========================================================
+   RIGHT SIDE (IMAGE + QUOTE)
+========================================================= */
+.login-right {
+  width: 50%;
+  position: relative;
+  overflow: hidden;
+  border-radius: 28px;
+}
+
+/* BACKGROUND SLIDER LAYER */
+.login-bg-slider {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: opacity 1s ease-in-out;
+  z-index: 1;
+}
+
+/* DARK OVERLAY */
+.login-bg-slider::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.2),
+    rgba(0,0,0,0.55)
+  );
+}
+
+/* =========================================================
+   QUOTE CARD (BOTTOM CENTER)
+========================================================= */
+.quote-card {
+  position: absolute;
+  left: 50%;
+  bottom: 32px;
+  transform: translateX(-50%);
+
+  width: calc(100% - 80px);
+  max-width: 720px;
+
+  padding: 26px 32px;
+  border-radius: 20px;
+
+  background: rgba(30, 30, 30, 0.6);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  border: 1px solid rgba(255,255,255,0.25);
+  box-shadow:
+    0 8px 32px rgba(0,0,0,0.25),
+    inset 0 1px 0 rgba(255,255,255,0.25);
+
+  color: #ffffff;
+  z-index: 2;
+}
+
+/* GLASS SHINE */
+.quote-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    120deg,
+    rgba(255,255,255,0.25),
+    rgba(255,255,255,0.05),
+    transparent
+  );
+  pointer-events: none;
+}
+
+/* TEXT */
+.quote {
+  font-size: 15px;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.92);
+  margin-bottom: 14px;
+}
+
+.author strong {
+  font-size: 14px;
+  display: block;
+}
+
+.author span {
+  font-size: 12px;
+  opacity: 0.8;
+  display: block;
+}
+
+/* OPTIONAL NAV */
+.quote-nav {
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+  display: flex;
+  gap: 10px;
+  font-size: 18px;
+  opacity: 0.7;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+@media (max-width: 992px) {
+  .login-container {
+    flex-direction: column;
+  }
+
+  .login-left,
+  .login-right {
+    width: 100%;
+  }
+
+  .login-right {
+    min-height: 360px;
+  }
+}
+
+@media (max-width: 768px) {
+  .quote-card {
+    width: calc(100% - 32px);
+    bottom: 16px;
+    padding: 20px;
+    border-radius: 16px;
+  }
+}
+
+/* ===== SLIDE IN ANIMATION ===== */
+@keyframes slideInUp {
+  from {
+    transform: translate(-50%, 20px);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+}
+
+/* QUOTE CARD */
+.quote-card {
+  position: absolute;
+  left: 50%;
+  bottom: 32px;
+  transform: translateX(-50%);
+
+  animation: slideInUp 0.6s ease-out;
+
+  width: calc(100% - 80px);
+  max-width: 800px;
+}
+
+
+/* BACKGROUND SLIDER */
+.login-bg-slider {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 1;
+}
+
+/* posisi awal */
+.login-bg-slider.active {
+  transform: translateX(0);
+}
+
+.login-bg-slider.next {
+  transform: translateX(100%);
+}
+
+/* animasi slide */
+.login-bg-slider.slide-in {
+  animation: slideInBg 0.8s ease-out forwards;
+}
+
+.login-bg-slider.slide-out {
+  animation: slideOutBg 0.8s ease-out forwards;
+}
+
+/* keyframes */
+@keyframes slideInBg {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOutBg {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
