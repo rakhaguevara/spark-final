@@ -1,0 +1,348 @@
+/* =========================================
+   BOOKING MODAL - SPARK THEME
+   Modern, clean, database-driven
+========================================= */
+
+.booking-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.booking-modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+}
+
+.booking-modal-content {
+    position: relative;
+    background: #ffffff;
+    border-radius: 12px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 90vh;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Close Button */
+.modal-close-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    transition: background 0.2s ease;
+}
+
+.modal-close-btn:hover {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+/* Image Section */
+.modal-image-section {
+    position: relative;
+    width: 100%;
+    height: 240px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.modal-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.modal-availability-badge {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    background: #22c55e;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.modal-availability-badge i {
+    font-size: 11px;
+}
+
+.modal-availability-badge.badge-full {
+    background: #ef4444;
+}
+
+/* Content Section */
+.modal-content-section {
+    padding: 24px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+/* Header */
+.modal-header {
+    margin-bottom: 12px;
+}
+
+.modal-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0 0 8px 0;
+    line-height: 1.3;
+}
+
+.modal-rating {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+}
+
+.modal-rating i {
+    color: #fbbf24;
+    font-size: 13px;
+}
+
+.modal-rating span {
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.modal-reviews {
+    color: #6b7280;
+    font-weight: 400;
+}
+
+/* Location */
+.modal-location {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 20px;
+    color: #6b7280;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.modal-location i {
+    color: #9ca3af;
+    margin-top: 2px;
+}
+
+/* Warning Box */
+.modal-warning-box {
+    background: #fef3c7;
+    border-left: 4px solid #f59e0b;
+    padding: 14px 16px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    display: flex;
+    gap: 12px;
+}
+
+.modal-warning-box i {
+    color: #f59e0b;
+    font-size: 18px;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.modal-warning-box strong {
+    display: block;
+    color: #92400e;
+    margin-bottom: 4px;
+    font-size: 14px;
+}
+
+.modal-warning-box p {
+    margin: 0;
+    color: #78350f;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* Sections */
+.modal-section-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0 0 12px 0;
+}
+
+/* Vehicle Badges */
+.modal-vehicle-section {
+    margin-bottom: 20px;
+}
+
+.modal-vehicle-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.modal-vehicle-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.modal-vehicle-badge.vehicle-motor {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.modal-vehicle-badge.vehicle-mobil {
+    background: #fed7aa;
+    color: #9a3412;
+}
+
+.modal-vehicle-badge i {
+    font-size: 12px;
+}
+
+/* Facilities */
+.modal-facilities-section {
+    margin-bottom: 20px;
+}
+
+.modal-facilities {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.modal-facility-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: #f3f4f6;
+    border-radius: 6px;
+    font-size: 12px;
+    color: #4b5563;
+}
+
+.modal-facility-tag i {
+    font-size: 11px;
+    color: #6b7280;
+}
+
+/* Pricing */
+.modal-pricing-section {
+    background: #f9fafb;
+    padding: 16px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.modal-price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-price-label {
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.modal-price-value {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+/* Actions */
+.modal-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.modal-btn-secondary,
+.modal-btn-primary {
+    flex: 1;
+    padding: 14px 24px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.modal-btn-secondary {
+    background: #f3f4f6;
+    color: #4b5563;
+}
+
+.modal-btn-secondary:hover {
+    background: #e5e7eb;
+}
+
+.modal-btn-primary {
+    background: #FFE100;
+    color: #1a1a1a;
+}
+
+.modal-btn-primary:hover {
+    background: #ffd700;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(255, 225, 0, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .booking-modal-content {
+        width: 95%;
+        max-height: 95vh;
+    }
+
+    .modal-image-section {
+        height: 200px;
+    }
+
+    .modal-content-section {
+        padding: 20px;
+    }
+
+    .modal-title {
+        font-size: 20px;
+    }
+}

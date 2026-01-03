@@ -13,8 +13,8 @@
 }
 
 /* RESET & BODY */
-* { 
-    box-sizing: border-box; 
+* {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
@@ -26,11 +26,11 @@ body {
     overflow-x: hidden;
 }
 
-/* ================= NAVBAR ================= */
+/* ================= NAVBAR (SPARK DARK THEME) ================= */
 .dashboard-navbar {
-    background-color: #ffffff;
+    background-color: #0f0f0f;
     height: 70px;
-    border-bottom: 1px solid #e5e5e5;
+    border-bottom: 1px solid #2a2a2a;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -38,21 +38,26 @@ body {
     position: sticky;
     top: 0;
     z-index: 1000;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .brand-wrapper {
     display: flex;
     align-items: center;
     gap: 12px;
-    color: var(--spark-text-dark);
+    color: #ffffff;
     text-decoration: none;
     font-weight: 700;
     font-size: 1.3rem;
+    transition: color 0.2s ease;
 }
 
-.brand-wrapper img { 
-    height: 36px; 
+.brand-wrapper:hover {
+    color: var(--spark-yellow);
+}
+
+.brand-wrapper img {
+    height: 36px;
 }
 
 .search-bar {
@@ -62,25 +67,25 @@ body {
 }
 
 .search-bar input {
-    background: #f5f5f5;
-    border: 1px solid #ddd;
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
     border-radius: 8px;
     padding: 12px 20px;
-    color: #333;
+    color: #ffffff;
     width: 100%;
     outline: none;
-    transition: 0.3s;
+    transition: all 0.2s ease;
     font-size: 14px;
 }
 
 .search-bar input::placeholder {
-    color: #999;
+    color: #888888;
 }
 
 .search-bar input:focus {
     border-color: var(--spark-yellow);
-    background: #fff;
-    box-shadow: 0 0 0 3px rgba(255, 225, 0, 0.1);
+    background: #222222;
+    box-shadow: 0 0 0 3px rgba(255, 225, 0, 0.15);
 }
 
 .user-actions {
@@ -92,15 +97,15 @@ body {
 .user-actions .icon-btn {
     background: transparent;
     border: none;
-    color: #666;
+    color: #888888;
     font-size: 1.2rem;
     cursor: pointer;
-    transition: 0.3s;
+    transition: color 0.2s ease;
     padding: 8px;
 }
 
-.user-actions .icon-btn:hover { 
-    color: var(--spark-yellow); 
+.user-actions .icon-btn:hover {
+    color: var(--spark-yellow);
 }
 
 /* ================= LAYOUT CONTAINER ================= */
@@ -115,7 +120,7 @@ body {
 .dashboard-sidebar {
     width: 260px;
     background-color: var(--spark-sidebar);
-    border-right: 1px solid rgba(255,255,255,0.05);
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
     display: flex;
     flex-direction: column;
     padding: 30px 20px;
@@ -123,14 +128,14 @@ body {
     overflow-y: auto;
 }
 
-.sidebar-menu { 
-    list-style: none; 
-    padding: 0; 
-    margin: 0; 
+.sidebar-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
-.sidebar-menu li { 
-    margin-bottom: 10px; 
+.sidebar-menu li {
+    margin-bottom: 10px;
 }
 
 .sidebar-menu a {
@@ -142,32 +147,39 @@ body {
     text-decoration: none;
     border-radius: 12px;
     font-weight: 500;
-    transition: 0.3s;
+    transition: color 0.25s ease;
 }
 
-.sidebar-menu a:hover, 
+.sidebar-menu a:hover {
+    color: #ffffff;
+}
+
 .sidebar-menu a.active {
     background: rgba(255, 225, 0, 0.1);
     color: var(--spark-yellow);
 }
 
-.sidebar-menu a i { 
-    width: 20px; 
-    text-align: center; 
+.sidebar-menu a.active:hover {
+    color: var(--spark-yellow);
+}
+
+.sidebar-menu a i {
+    width: 20px;
+    text-align: center;
 }
 
 .sidebar-logout {
     margin-top: auto;
-    border-top: 1px solid rgba(255,255,255,0.1);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
     padding-top: 20px;
 }
 
-.sidebar-logout a { 
-    color: #ff5252; 
-    text-decoration: none; 
-    display: flex; 
-    align-items: center; 
-    gap: 10px; 
+.sidebar-logout a {
+    color: #ff5252;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
     font-weight: 600;
     padding: 12px 16px;
     border-radius: 12px;
@@ -197,16 +209,16 @@ body {
     border-bottom: 1px solid #e5e5e5;
 }
 
-.page-header h1 { 
-    margin: 0; 
-    font-size: 1.8rem; 
-    font-weight: 700; 
-    color: #111; 
+.page-header h1 {
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #111;
 }
 
-.page-header p { 
-    margin: 5px 0 0; 
-    color: #666; 
+.page-header p {
+    margin: 5px 0 0;
+    color: #666;
     font-size: 0.9rem;
 }
 
@@ -224,12 +236,12 @@ body {
 }
 
 .profile-avatar {
-    width: 32px; 
+    width: 32px;
     height: 32px;
     background: var(--spark-yellow);
     border-radius: 50%;
-    display: flex; 
-    align-items: center; 
+    display: flex;
+    align-items: center;
     justify-content: center;
     font-weight: 700;
     color: #000;
@@ -261,14 +273,68 @@ body {
 }
 
 .filter-btn:hover {
-    border-color: var(--spark-yellow);
     background: #fffdf0;
+    border-color: #FFD600;
 }
 
 .filter-btn.active {
     background: var(--spark-yellow);
+    color: var(--spark-black);
     border-color: var(--spark-yellow);
-    color: #000;
+    font-weight: 600;
+}
+
+/* ================= VEHICLE TYPE DROPDOWN MENU ================= */
+.vehicle-type-menu {
+    position: fixed;
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    z-index: 10000;
+    min-width: 200px;
+    overflow: hidden;
+    animation: dropdownFadeIn 0.2s ease-out;
+}
+
+@keyframes dropdownFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.filter-menu-item {
+    padding: 14px 18px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    font-size: 14px;
+    font-weight: 500;
+    color: #1a1a1a;
+    border-bottom: 1px solid #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.filter-menu-item:last-child {
+    border-bottom: none;
+}
+
+.filter-menu-item:hover {
+    background: #fffdf0;
+    color: #1a1a1a;
+    padding-left: 22px;
+}
+
+.filter-menu-item:active {
+    background: #FFD600;
+    color: #1a1a1a;
 }
 
 .sort-dropdown {
@@ -310,27 +376,27 @@ body {
 
 /* ================= LEFT SIDE - PARKING LIST ================= */
 .parking-container {
-    width: 420px;
+    width: 500px;
     flex-shrink: 0;
     background: #f5f5f5;
     overflow-y: auto;
-    padding: 20px;
+    padding: 16px;
     display: flex;
     flex-direction: column;
     gap: 16px;
 }
 
-.parking-container::-webkit-scrollbar { 
-    width: 6px; 
+.parking-container::-webkit-scrollbar {
+    width: 6px;
 }
 
 .parking-container::-webkit-scrollbar-track {
     background: transparent;
 }
 
-.parking-container::-webkit-scrollbar-thumb { 
-    background: #ccc; 
-    border-radius: 10px; 
+.parking-container::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 10px;
 }
 
 .parking-container::-webkit-scrollbar-thumb:hover {
@@ -338,211 +404,8 @@ body {
 }
 
 /* ================= PARKING CARD ================= */
-.parking-card {
-    background-color: #ffffff;
-    border-radius: 16px;
-    padding: 0;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border: 3px solid transparent;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-}
-
-.parking-card:hover {
-    border-color: var(--spark-yellow);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-}
-
-.parking-card-image {
-    width: 100%;
-    height: 180px;
-    overflow: hidden;
-    position: relative;
-    background: #f5f5f5;
-}
-
-.parking-card-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.parking-badge {
-    position: absolute;
-    bottom: 12px;
-    left: 12px;
-    background: var(--spark-yellow);
-    color: #000;
-    padding: 6px 14px;
-    border-radius: 8px;
-    font-size: 12px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-}
-
-.parking-card-content {
-    padding: 18px;
-}
-
-.parking-card-header h3 {
-    margin: 0 0 10px;
-    font-size: 1.15rem;
-    color: #111;
-    font-weight: 700;
-    line-height: 1.3;
-}
-
-.parking-location {
-    font-size: 0.85rem;
-    color: #666;
-    display: flex;
-    align-items: flex-start;
-    gap: 8px;
-    margin-bottom: 12px;
-    line-height: 1.4;
-}
-
-.parking-location i {
-    color: var(--spark-yellow);
-    margin-top: 3px;
-    flex-shrink: 0;
-}
-
-.parking-facilities {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 14px;
-}
-
-.facility-tag {
-    background: #f5f5f5;
-    color: #666;
-    padding: 5px 12px;
-    border-radius: 6px;
-    font-size: 0.8rem;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.parking-meta {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 16px;
-    font-size: 0.85rem;
-}
-
-.parking-rating {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    color: #333;
-    font-weight: 600;
-}
-
-.parking-distance {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    color: #666;
-}
-
-.parking-slots {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    font-weight: 600;
-}
-
-.parking-slots.available {
-    color: #10b981;
-}
-
-.parking-slots.full {
-    color: #ff5252;
-}
-
-.parking-description {
-    font-size: 0.85rem;
-    color: #666;
-    line-height: 1.5;
-    margin-bottom: 16px;
-}
-
-.parking-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 16px;
-    border-top: 1px solid #f0f0f0;
-    gap: 12px;
-}
-
-.parking-price {
-    display: flex;
-    flex-direction: column;
-}
-
-.price-amount {
-    font-size: 1.3rem;
-    font-weight: 800;
-    color: #111;
-    line-height: 1;
-}
-
-.price-subtitle {
-    font-size: 0.75rem;
-    color: #999;
-    margin-top: 3px;
-}
-
-.parking-actions {
-    display: flex;
-    gap: 8px;
-}
-
-.btn-details {
-    background: transparent;
-    color: var(--spark-blue);
-    border: none;
-    padding: 10px 16px;
-    font-weight: 600;
-    font-size: 0.85rem;
-    cursor: pointer;
-    text-decoration: none;
-    transition: 0.2s;
-    border-radius: 8px;
-}
-
-.btn-details:hover {
-    background: #f0f7ff;
-}
-
-.btn-book {
-    background-color: var(--spark-blue);
-    color: #ffffff;
-    text-decoration: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-weight: 700;
-    font-size: 0.85rem;
-    transition: all 0.2s;
-    border: none;
-    cursor: pointer;
-    white-space: nowrap;
-}
-
-.btn-book:hover {
-    background-color: #0052cc;
-    transform: scale(1.05);
-}
+/* Parking card styles moved to parking-card.css */
+/* This section is intentionally left empty to avoid conflicts */
 
 /* ================= EMPTY STATE ================= */
 .empty-state {
@@ -565,9 +428,9 @@ body {
     height: 100%;
 }
 
-#map { 
-    width: 100%; 
-    height: 100%; 
+#map {
+    width: 100%;
+    height: 100%;
 }
 
 /* ================= DETAIL POPUP (MODAL STYLE) ================= */
@@ -577,7 +440,7 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0, 0, 0, 0.5);
     z-index: 9999;
     display: none;
     align-items: center;
@@ -596,7 +459,7 @@ body {
     width: 100%;
     max-height: 90vh;
     overflow-y: auto;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     position: relative;
 }
 
@@ -604,7 +467,7 @@ body {
     position: absolute;
     top: 15px;
     right: 15px;
-    background: rgba(0,0,0,0.6);
+    background: rgba(0, 0, 0, 0.6);
     color: #fff;
     border: none;
     width: 36px;
@@ -641,7 +504,7 @@ body {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(255,255,255,0.9);
+    background: rgba(255, 255, 255, 0.9);
     border: none;
     width: 40px;
     height: 40px;
@@ -657,17 +520,22 @@ body {
 
 .slider-nav:hover {
     background: #fff;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
 }
 
-.slider-nav.prev { left: 15px; }
-.slider-nav.next { right: 15px; }
+.slider-nav.prev {
+    left: 15px;
+}
+
+.slider-nav.next {
+    right: 15px;
+}
 
 .image-counter {
     position: absolute;
     bottom: 15px;
     right: 15px;
-    background: rgba(0,0,0,0.7);
+    background: rgba(0, 0, 0, 0.7);
     color: #fff;
     padding: 6px 14px;
     border-radius: 8px;
@@ -812,7 +680,7 @@ body {
 .detail-book-btn:hover {
     background: #0052cc;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,102,255,0.3);
+    box-shadow: 0 4px 12px rgba(0, 102, 255, 0.3);
 }
 
 /* Leaflet Popup Override */
@@ -842,34 +710,34 @@ body {
         height: auto;
         overflow: visible;
     }
-    
+
     .dashboard-sidebar {
         display: none;
     }
-    
+
     .filters-bar {
         overflow-x: auto;
         padding: 12px 20px;
     }
-    
+
     .content-grid {
         flex-direction: column;
         height: auto;
     }
-    
+
     .parking-container {
         width: 100%;
         max-height: 500px;
     }
-    
+
     .map-container {
         height: 400px;
     }
-    
+
     .detail-popup-content {
         max-width: 90%;
     }
-    
+
     .detail-image-slider {
         height: 250px;
     }
@@ -879,16 +747,16 @@ body {
     .parking-card-image {
         height: 160px;
     }
-    
+
     .parking-footer {
         flex-direction: column;
         align-items: stretch;
     }
-    
+
     .parking-actions {
         width: 100%;
     }
-    
+
     .btn-details,
     .btn-book {
         flex: 1;
