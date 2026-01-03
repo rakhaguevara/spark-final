@@ -1,6 +1,6 @@
 /**
  * BOOKING-PAGE.JS
- * Step-by-step progressive disclosure logic
+ * Step-by-step progressive disclosure logic with animations
  */
 
 (function () {
@@ -35,6 +35,16 @@
                 this.value = this.value.toUpperCase();
             });
         }
+
+        // Real-time validation removal on input
+        document.querySelectorAll('.form-input, .form-select').forEach(input => {
+            input.addEventListener('input', function () {
+                removeError(this);
+            });
+            input.addEventListener('change', function () {
+                removeError(this);
+            });
+        });
     });
 
     // Make nextStep global so onclick works
@@ -45,7 +55,7 @@
             stepEl.classList.add('completed');
             stepEl.classList.remove('active');
 
-            // Move to next
+            // Move to next with animation
             currentStep = step + 1;
             updateStepVisibility();
         }
@@ -62,12 +72,26 @@
             const contentEl = stepEl.querySelector('.step-content');
             const editBtn = stepEl.querySelector('.btn-edit-step');
 
+            // Reset classes
+            stepEl.classList.remove('slide-in', 'slide-out');
+
             if (i === currentStep) {
                 // Active Step
                 stepEl.classList.add('active');
                 stepEl.classList.remove('disabled');
+
+                // Show content with animation
                 contentEl.style.display = 'block';
+                // Small delay to allow display:block to render before adding opacity/transform logic if we were doing it via CSS
+                // But simplified: the active state handles the border/shadow.
+                // We'll add a class to trigger content animation if needed.
+                stepEl.classList.add('fade-in-content');
+
                 if (editBtn) editBtn.style.display = 'none';
+
+                // Scroll to active step if needed (smooth)
+                stepEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
             } else if (i < currentStep) {
                 // Completed Step
                 stepEl.classList.remove('active', 'disabled');
@@ -92,37 +116,62 @@
         inputs.forEach(input => {
             if (!input.value.trim()) {
                 isValid = false;
-                highlightError(input);
+                showError(input, 'This field is required');
             } else {
                 removeError(input);
             }
 
             // Email validation for step 1
-            if (step === 1 && input.type === 'email') {
+            if (step === 1 && input.type === 'email' && input.value.trim()) {
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 if (!emailRegex.test(input.value.trim())) {
                     isValid = false;
-                    highlightError(input);
-                    alert('Please enter a valid email address.');
+                    showError(input, 'Please enter a valid email address');
                 }
             }
         });
 
-        if (!isValid) {
-            alert('Please fill in all required fields to continue.');
-        }
-
         return isValid;
     }
 
-    function highlightError(input) {
+    function showError(input, message) {
+        // Highlight input
         input.style.borderColor = '#ef4444';
         input.style.boxShadow = '0 0 0 3px rgba(239, 68, 68, 0.1)';
+
+        // Find or create error message element
+        // We look for a small.error-msg with an ID related to the input or just next sibling
+        let errorMsg = input.nextElementSibling;
+
+        // Check if next element is error-msg, if not try to find by id
+        if (!errorMsg || !errorMsg.classList.contains('error-msg')) {
+            const errorId = 'error-' + input.id;
+            errorMsg = document.getElementById(errorId);
+        }
+
+        if (errorMsg) {
+            errorMsg.textContent = message;
+            errorMsg.style.display = 'block';
+            errorMsg.style.color = '#ef4444';
+            errorMsg.style.fontSize = '12px';
+            errorMsg.style.marginTop = '4px';
+        }
     }
 
     function removeError(input) {
         input.style.borderColor = '';
         input.style.boxShadow = '';
+
+        let errorMsg = input.nextElementSibling;
+        if (!errorMsg || !errorMsg.classList.contains('error-msg')) {
+            const errorId = 'error-' + input.id;
+            errorMsg = document.getElementById(errorId);
+        }
+
+        if (errorMsg) {
+            errorMsg.textContent = '';
+            errorMsg.style.display = 'none';
+        }
     }
 
     function handleFormSubmit(e) {
@@ -138,3 +187,4 @@
     }
 
 })();
+

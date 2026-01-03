@@ -26,15 +26,15 @@ body {
 
 /* ================= CHECKOUT NAVBAR ================= */
 .checkout-navbar {
-    background: #ffffff;
-    border-bottom: 1px solid #f0f0f0;
+    background: transparent;
+    border-bottom: none;
     padding: 0;
 }
 
 .checkout-navbar-content {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 16px 24px;
+    padding: 20px 24px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -45,11 +45,11 @@ body {
     align-items: center;
 }
 
-.logo-text {
-    font-size: 24px;
-    font-weight: 800;
-    color: var(--spark-black);
-    letter-spacing: -0.5px;
+.logo-image {
+    height: 28px;
+    width: auto;
+    object-fit: contain;
+    display: block;
 }
 
 .navbar-secure {
@@ -567,4 +567,64 @@ body {
     .logo-text {
         font-size: 20px;
     }
+}
+
+/* ================= ANIMATIONS ================= */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in-content {
+    animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.step-content {
+    padding: 0 24px 24px 72px;
+    /* Indented to align with title */
+    border-top: 1px solid transparent;
+}
+
+/* ================= READ ONLY INPUTS ================= */
+.form-input.read-only {
+    background-color: #f9fafb;
+    border-color: #e5e7eb;
+    color: var(--text-gray);
+    cursor: not-allowed;
+    pointer-events: none;
+    /* Prevent clicks */
+}
+
+.form-input.read-only:focus {
+    box-shadow: none;
+    border-color: #e5e7eb;
+}
+
+.info-box.mb-4 {
+    margin-bottom: 20px;
+    background: #eff6ff;
+    border: 1px solid #dbeafe;
+    border-radius: 8px;
+    color: #1e40af;
+}
+
+.info-box.mb-4 i {
+    color: #3b82f6;
+}
+
+.text-blue-600 {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.text-blue-600:hover {
+    text-decoration: underline;
 }

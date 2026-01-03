@@ -18,12 +18,25 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 $pdo = getDBConnection();
+$user = isLoggedIn() ? getCurrentUser() : null;
 
 // Get form data
 $id_tempat = $_POST['id_tempat'] ?? null;
-$email = trim($_POST['email'] ?? '');
-$nama_lengkap = trim($_POST['nama_lengkap'] ?? '');
-$nomor_telepon = trim($_POST['nomor_telepon'] ?? '');
+
+// CRITICAL: Use session/DB data for contact info if logged in
+// This prevents user from tampering with read-only fields via HTML manipulation
+if ($user) {
+    $email = $user['email'];
+    $nama_lengkap = $user['nama_pengguna'];
+    $nomor_telepon = $user['nomor_telepon'] ?? '';
+    $id_pengguna = $user['id_pengguna'];
+} else {
+    // Fallback for guest (if enabled later) or redirect
+    $_SESSION['error'] = 'Please login to continue.';
+    header('Location: ' . BASEURL . '/pages/login.php');
+    exit;
+}
+
 $jenis_kendaraan = trim($_POST['jenis_kendaraan'] ?? '');
 $nomor_plat = trim($_POST['nomor_plat'] ?? '');
 $tanggal_booking = $_POST['tanggal_booking'] ?? '';
@@ -32,17 +45,17 @@ $durasi_jam = (int)($_POST['durasi_jam'] ?? 0);
 $harga_per_jam = (float)($_POST['harga_per_jam'] ?? 0);
 
 // Validate required fields
-if (!$id_tempat || !$email || !$nama_lengkap || !$jenis_kendaraan || !$tanggal_booking || !$waktu_mulai || !$durasi_jam) {
+if (!$id_tempat || !$jenis_kendaraan || !$tanggal_booking || !$waktu_mulai || !$durasi_jam) {
     $_SESSION['error'] = 'Please fill in all required fields.';
     header('Location: ' . BASEURL . '/pages/booking.php?id=' . $id_tempat);
     exit;
 }
 
-// Validate email
-if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    $_SESSION['error'] = 'Please enter a valid email address.';
-    header('Location: ' . BASEURL . '/pages/booking.php?id=' . $id_tempat);
-    exit;
+// Ensure vehicle info is valid
+if (empty($jenis_kendaraan)) {
+     $_SESSION['error'] = 'Vehicle type is required.';
+     header('Location: ' . BASEURL . '/pages/booking.php?id=' . $id_tempat);
+     exit;
 }
 
 // Calculate end time and total price
@@ -51,9 +64,6 @@ $total_harga = $harga_per_jam * $durasi_jam;
 
 // Generate unique QR token
 $qr_token = bin2hex(random_bytes(32)); // 64 character hex string
-
-// Get user ID if logged in
-$id_pengguna = isLoggedIn() ? getCurrentUser()['id_pengguna'] : null;
 
 try {
     // Insert booking record

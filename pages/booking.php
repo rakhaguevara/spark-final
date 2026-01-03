@@ -90,7 +90,7 @@ $bookingData = [
     <nav class="checkout-navbar">
         <div class="checkout-navbar-content">
             <div class="navbar-logo">
-                <span class="logo-text">SPARK</span>
+                <img src="<?= BASEURL ?>/assets/img/logo.png" alt="SPARK" class="logo-image">
             </div>
             <div class="navbar-secure">
                 <i class="fas fa-lock"></i>
