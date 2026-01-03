@@ -74,7 +74,7 @@ foreach ($bookings as $booking) {
 <body>
     <!-- NAVBAR -->
     <nav class="dashboard-navbar">
-        <a href="<?= BASEURL ?>" class="brand-wrapper">
+        <a href="<?= BASEURL ?>/pages/dashboard.php" class="brand-wrapper">
             <img src="<?= BASEURL ?>/assets/img/logo.png" alt="Spark Logo">
             SPARK
         </a>
@@ -85,7 +85,6 @@ foreach ($bookings as $booking) {
 
         <div class="user-actions">
             <button class="icon-btn" title="Notifications"><i class="fas fa-bell"></i></button>
-            <button class="icon-btn" title="Settings"><i class="fas fa-cog"></i></button>
             <div class="profile-chip">
                 <div class="profile-avatar">
                     <?= strtoupper(substr($user['nama_pengguna'] ?? 'U', 0, 1)) ?>
@@ -160,7 +159,8 @@ foreach ($bookings as $booking) {
                         <div class="ticket-qr-section">
                             <div class="qr-container" id="qrContainer">
                                 <?php if (!empty($activeBooking['qr_token'])): ?>
-                                    <img src="<?= BASEURL ?>/api/generate-qr-image.php?booking_id=<?= $activeBooking['id_booking'] ?>" 
+                                    <img id="qrImage" 
+                                         src="<?= BASEURL ?>/api/generate-qr-image.php?booking_id=<?= $activeBooking['id_booking'] ?>&t=<?= time() ?>" 
                                          alt="QR Code" 
                                          style="width: 280px; height: 280px; border: 2px solid #e5e7eb; border-radius: 8px;"
                                          onerror="this.style.display='none'; document.getElementById('qrError').style.display='block';">
@@ -175,6 +175,14 @@ foreach ($bookings as $booking) {
                                 <?php endif; ?>
                             </div>
                             <p class="qr-hint">Scan this QR code at parking entrance</p>
+                            <?php if (!empty($activeBooking['qr_token'])): ?>
+                                <div style="text-align: center; margin-top: 10px;">
+                                    <div style="display: inline-block; padding: 8px 16px; background: #f0f9ff; border-radius: 8px; border: 1px solid #bfdbfe;">
+                                        <i class="fas fa-sync-alt" style="color: #3b82f6; margin-right: 6px;"></i>
+                                        <span style="color: #1e40af; font-weight: 500;">Refreshing in <span id="qrTimer" style="font-weight: 700; color: #2563eb;">10</span>s</span>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
                         </div>
 
                         <div class="ticket-details">
@@ -265,6 +273,76 @@ foreach ($bookings as $booking) {
         </main>
     </div>
 
+    <script>
+        // QR Code Auto-Refresh System
+        const BASEURL = '<?= BASEURL ?>';
+        const BOOKING_ID = '<?= $activeBooking['id_booking'] ?? '' ?>';
+        const REFRESH_INTERVAL = 10000; // 10 seconds
+        
+        let countdown = 10;
+        let refreshTimer = null;
+        let countdownTimer = null;
+        
+        function updateCountdown() {
+            const timerElement = document.getElementById('qrTimer');
+            if (timerElement) {
+                timerElement.textContent = countdown;
+                countdown--;
+                
+                if (countdown < 0) {
+                    countdown = 10;
+                }
+            }
+        }
+        
+        function refreshQRCode() {
+            if (!BOOKING_ID) return;
+            
+            // Refresh token on server
+            fetch(BASEURL + '/api/refresh-qr-token.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'booking_id=' + BOOKING_ID
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update QR image with cache buster
+                    const qrImage = document.getElementById('qrImage');
+                    if (qrImage) {
+                        qrImage.src = BASEURL + '/api/generate-qr-image.php?booking_id=' + BOOKING_ID + '&t=' + Date.now();
+                    }
+                    
+                    // Reset countdown
+                    countdown = 10;
+                } else {
+                    console.error('QR refresh failed:', data.error);
+                }
+            })
+            .catch(error => {
+                console.error('QR refresh error:', error);
+            });
+        }
+        
+        // Start auto-refresh if booking exists
+        if (BOOKING_ID) {
+            // Update countdown every second
+            countdownTimer = setInterval(updateCountdown, 1000);
+            
+            // Refresh QR every 10 seconds
+            refreshTimer = setInterval(refreshQRCode, REFRESH_INTERVAL);
+            
+            console.log('QR auto-refresh started for booking:', BOOKING_ID);
+        }
+        
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', function() {
+            if (refreshTimer) clearInterval(refreshTimer);
+            if (countdownTimer) clearInterval(countdownTimer);
+        });
+    </script>
     <script src="<?= BASEURL ?>/assets/js/sidebar-toggle.js"></script>
 </body>
 </html>

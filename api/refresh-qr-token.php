@@ -1,7 +1,7 @@
 <?php
 /**
  * QR TOKEN REFRESH API
- * Generates new QR token every 10 seconds
+ * Generates new QR token every 10 seconds for security
  */
 
 header('Content-Type: application/json');
@@ -16,80 +16,74 @@ startSession();
 // Check if user is logged in
 if (!isLoggedIn()) {
     http_response_code(401);
-    echo json_encode(['success' => false, 'message' => 'Unauthorized']);
+    echo json_encode(['success' => false, 'error' => 'Unauthorized']);
     exit;
 }
 
-// Get user
 $user = getCurrentUser();
+$booking_id = $_POST['booking_id'] ?? '';
 
-// Validate input
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    http_response_code(405);
-    echo json_encode(['success' => false, 'message' => 'Method not allowed']);
-    exit;
-}
-
-$ticket_id = $_POST['ticket_id'] ?? '';
-
-if (empty($ticket_id)) {
+if (empty($booking_id)) {
     http_response_code(400);
-    echo json_encode(['success' => false, 'message' => 'Missing ticket_id']);
+    echo json_encode(['success' => false, 'error' => 'Missing booking_id']);
     exit;
 }
 
 try {
     $pdo = getDBConnection();
     
-    // Verify ticket exists and belongs to user
+    // Verify booking belongs to user
     $stmt = $pdo->prepare("
-        SELECT ticket_id, ticket_status 
-        FROM tickets 
-        WHERE ticket_id = ? AND id_pengguna = ?
+        SELECT id_booking, waktu_selesai 
+        FROM booking_parkir 
+        WHERE id_booking = ? AND id_pengguna = ? AND status_booking = 'confirmed'
     ");
-    $stmt->execute([$ticket_id, $user['id_pengguna']]);
-    $ticket = $stmt->fetch(PDO::FETCH_ASSOC);
+    $stmt->execute([$booking_id, $user['id_pengguna']]);
+    $booking = $stmt->fetch(PDO::FETCH_ASSOC);
     
-    if (!$ticket) {
+    if (!$booking) {
         http_response_code(404);
-        echo json_encode(['success' => false, 'message' => 'Ticket not found']);
+        echo json_encode(['success' => false, 'error' => 'Booking not found']);
         exit;
     }
-    
-    // Check ticket is active or checked_in
-    if (!in_array($ticket['ticket_status'], ['active', 'checked_in'])) {
-        http_response_code(400);
-        echo json_encode(['success' => false, 'message' => 'Ticket not active']);
-        exit;
-    }
-    
-    // Delete expired tokens for this ticket
-    $stmt = $pdo->prepare("
-        DELETE FROM qr_sessions 
-        WHERE ticket_id = ? AND expires_at < NOW()
-    ");
-    $stmt->execute([$ticket_id]);
     
     // Generate new token
-    $qr_token = bin2hex(random_bytes(32));
-    $expires_at = date('Y-m-d H:i:s', time() + 10); // 10 seconds
+    $new_token = hash('sha256', $booking_id . time() . bin2hex(random_bytes(16)));
     
-    // Insert new token
-    $stmt = $pdo->prepare("
-        INSERT INTO qr_sessions (ticket_id, qr_token, expires_at)
-        VALUES (?, ?, ?)
-    ");
-    $stmt->execute([$ticket_id, $qr_token, $expires_at]);
+    // Calculate expiry (10 seconds from now)
+    $expires_at = date('Y-m-d H:i:s', time() + 10);
     
-    // Return new token
+    // Check if QR session exists
+    $stmt = $pdo->prepare("SELECT id_qr FROM qr_session WHERE id_booking = ?");
+    $stmt->execute([$booking_id]);
+    $existing = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    if ($existing) {
+        // Update existing session
+        $stmt = $pdo->prepare("
+            UPDATE qr_session 
+            SET qr_token = ?, expires_at = ?
+            WHERE id_booking = ?
+        ");
+        $stmt->execute([$new_token, $expires_at, $booking_id]);
+    } else {
+        // Insert new session
+        $stmt = $pdo->prepare("
+            INSERT INTO qr_session (id_booking, qr_token, expires_at)
+            VALUES (?, ?, ?)
+        ");
+        $stmt->execute([$booking_id, $new_token, $expires_at]);
+    }
+    
     echo json_encode([
         'success' => true,
-        'qr_token' => $qr_token,
-        'expires_at' => $expires_at
+        'qr_token' => $new_token,
+        'expires_at' => $expires_at,
+        'expires_in' => 10
     ]);
     
-} catch (PDOException $e) {
-    error_log("QR token refresh error: " . $e->getMessage());
+} catch (Exception $e) {
+    error_log("QR refresh error: " . $e->getMessage());
     http_response_code(500);
-    echo json_encode(['success' => false, 'message' => 'Server error']);
+    echo json_encode(['success' => false, 'error' => 'Server error']);
 }

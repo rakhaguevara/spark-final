@@ -158,7 +158,7 @@ function getParkingFacilities($jam_buka, $jam_tutup) {
 
     <!-- NAVBAR -->
     <nav class="dashboard-navbar">
-        <a href="<?= BASEURL ?>" class="brand-wrapper">
+        <a href="<?= BASEURL ?>/pages/dashboard.php" class="brand-wrapper">
             <img src="<?= BASEURL ?>/assets/img/logo.png" alt="Spark Logo">
             SPARK
         </a>
@@ -169,7 +169,6 @@ function getParkingFacilities($jam_buka, $jam_tutup) {
 
         <div class="user-actions">
             <button class="icon-btn" title="Notifications"><i class="fas fa-bell"></i></button>
-            <button class="icon-btn" title="Settings"><i class="fas fa-cog"></i></button>
             <div class="profile-chip">
                 <div class="profile-avatar">
                     <?= strtoupper(substr($user['nama_pengguna'] ?? 'U', 0, 1)) ?>
