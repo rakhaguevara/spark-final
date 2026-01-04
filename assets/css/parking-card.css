@@ -31,7 +31,12 @@
     display: flex;
     flex-direction: row;
     align-items: stretch;
-    /* WAJIB */
+    flex-shrink: 0;
+    /* Ensures card doesn't shrink in flex container */
+    min-height: 180px;
+    /* Enforce minimum height */
+    width: 100%;
+    /* Ensure full width */
 
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: var(--card-shadow);
@@ -54,8 +59,10 @@
     position: relative;
     flex-shrink: 0;
     margin: 8px;
-    width: 160px;
-    height: 170px;
+    width: 130px;
+    /* Adjusted for list view */
+    height: 190px;
+    /* Reduced height to match text better */
     /* FIXED & IDEAL */
     overflow: hidden;
     background: #e5e7eb;
@@ -366,6 +373,8 @@
 }
 
 /* ================= CONTAINER ================= */
+/* ================= CONTAINER ================= */
+/* Moved to dashboard-user.css for better layout control
 .parking-container {
     display: flex;
     flex-direction: column;
@@ -373,18 +382,29 @@
     padding: 16px;
     overflow-y: auto;
     background: #f9fafb;
-}
+} */
 
 /* ================= RESPONSIVE ================= */
-@media (max-width: 768px) {
+/* ================= RESPONSIVE ADJUSTMENTS ================= */
+/* 
+   We removed the generic 768px breakdown because the dashboard 
+   sidebar list needs to stay horizontal even on smaller screens.
+   We only stack if it's REALLY small (like phone vertical).
+*/
+@media (max-width: 480px) {
     .parking-card {
         flex-direction: column;
     }
 
     .card-image-wrapper {
         width: 100%;
-        height: 160px;
-        min-height: 160px;
+        height: 150px;
+        border-radius: 4px 4px 0 0;
+        margin: 0;
+    }
+
+    .card-content-wrapper {
+        padding: 12px;
     }
 
     .card-footer {
@@ -393,18 +413,14 @@
         gap: 10px;
     }
 
-    .price-section {
-        align-items: center;
-    }
-
     .card-actions {
         width: 100%;
+        justify-content: space-between;
     }
 
     .btn-card-details,
     .btn-card-book {
         flex: 1;
-        text-align: center;
         justify-content: center;
     }
 }

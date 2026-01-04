@@ -192,17 +192,26 @@ function getParkingFacilities($jam_buka, $jam_tutup) {
 
     <!-- NAVBAR -->
     <nav class="dashboard-navbar">
+        <!-- Desktop: Logo Left. Mobile: Hamburger Left -->
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle Menu">
+            <i class="fas fa-bars"></i>
+        </button>
+
         <a href="<?= BASEURL ?>/pages/dashboard.php" class="brand-wrapper">
             <img src="<?= BASEURL ?>/assets/img/logo.png" alt="Spark Logo">
-            SPARK
+            <span class="brand-text">SPARK</span>
         </a>
 
+        <!-- Search Bar (Hidden on Mobile) -->
         <div class="search-bar">
             <input type="text" id="searchInput" placeholder="Where are you going?">
         </div>
 
+        <!-- Right Side: User Actions -->
         <div class="user-actions">
-            <button class="icon-btn" title="Notifications"><i class="fas fa-bell"></i></button>
+            <!-- Mobile: Profile Icon Only. Desktop: Chip -->
+            <button class="icon-btn mobile-hidden" title="Notifications"><i class="fas fa-bell"></i></button>
+            
             <div class="profile-chip">
                 <div class="profile-avatar">
                     <?php if (!empty($user['profile_image'])): ?>
@@ -211,7 +220,7 @@ function getParkingFacilities($jam_buka, $jam_tutup) {
                         <?= strtoupper(substr($user['nama_pengguna'] ?? 'U', 0, 1)) ?>
                     <?php endif; ?>
                 </div>
-                <span><?= htmlspecialchars(getShortName($user['nama_pengguna'] ?? 'User')) ?></span>
+                <span class="profile-name"><?= htmlspecialchars(getShortName($user['nama_pengguna'] ?? 'User')) ?></span>
             </div>
         </div>
     </nav>
@@ -405,5 +414,6 @@ function getParkingFacilities($jam_buka, $jam_tutup) {
     <script src="<?= BASEURL ?>/assets/js/dashboard-search-sort.js"></script>
     <script src="<?= BASEURL ?>/assets/js/dashboard-filters.js"></script>
     <script src="<?= BASEURL ?>/assets/js/search-popup.js"></script>
+    <script src="<?= BASEURL ?>/assets/js/mobile-interaction.js"></script>
 </body>
 </html>
