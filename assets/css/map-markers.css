@@ -1,0 +1,55 @@
+/* =========================================
+   MAP PRICE MARKERS - SPARK BRANDING
+   Yellow pill markers with bold black text
+========================================= */
+
+.spark-price-marker {
+    /* Remove default Leaflet icon styles */
+    background: none !important;
+    border: none !important;
+}
+
+.marker-pill {
+    background: #FFE100;
+    color: #1a1a1a;
+    padding: 7px 14px;
+    border-radius: 25px;
+    font-weight: 800;
+    font-size: 13px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* SPARK branding - bold black border */
+    border: 1px solid #1a1a1a;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
+
+    /* Ensure text is always visible */
+    text-align: center;
+    line-height: 1;
+}
+
+/* Hover effect */
+.marker-pill:hover {
+    transform: scale(1.08);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+    background: #FFED4E;
+}
+
+/* Active/selected marker */
+.spark-price-marker.active .marker-pill {
+    background: #1a1a1a;
+    color: #FFE100;
+    border-color: #FFE100;
+    box-shadow: 0 0 0 3px rgba(255, 225, 0, 0.3);
+}
+
+/* Ensure marker is clickable */
+.leaflet-marker-icon.spark-price-marker {
+    z-index: 600 !important;
+}
+
+.leaflet-marker-icon.spark-price-marker.active {
+    z-index: 700 !important;
+}

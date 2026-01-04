@@ -15,12 +15,31 @@ function renderParkingCard($spot, $baseUrl = '') {
 
     $image = $baseUrl . '/assets/img/content-1.png';
     if (!empty($spot['foto_tempat'])) {
-        $image = $baseUrl . '/assets/img/park/' . $spot['foto_tempat'];
+        $image = $baseUrl . '/assets/img/' . $spot['foto_tempat'];
     }
 
+    // Availability state logic (data-driven - GREEN/RED only)
+    $isFull = ($slots == 0);
     $badgeClass = '';
-    if ($slots <= 2) $badgeClass = 'danger';
-    elseif ($slots <= 5) $badgeClass = 'warning';
+    $badgeText = '';
+    
+    if ($isFull) {
+        // RED - No slots available
+        $badgeClass = 'badge-full';
+        $badgeText = 'Full';
+    } else {
+        // GREEN - Slots available
+        $badgeClass = 'badge-available';
+        $badgeText = $slots . ' available';
+    }
+    ?>
+
+    <?php
+    // Prepare vehicle types array for filtering
+    $vehicleTypes = array_map(function($v) {
+        return $v['nama_jenis'];
+    }, $spot['vehicle_availability']);
+    $vehicleTypesJson = htmlspecialchars(json_encode($vehicleTypes), ENT_QUOTES, 'UTF-8');
     ?>
 
     <div class="parking-card"
@@ -28,51 +47,92 @@ function renderParkingCard($spot, $baseUrl = '') {
          data-price="<?= $price ?>"
          data-rating="<?= $rating ?>"
          data-lat="<?= $lat ?>"
-         data-lng="<?= $lng ?>">
+         data-lng="<?= $lng ?>"
+         data-vehicle-types="<?= $vehicleTypesJson ?>"
+         onclick="focusMapOnSpot(<?= $lat ?>, <?= $lng ?>, <?= $id ?>)">
 
-        <div class="parking-card-image">
-            <img src="<?= $image ?>" alt="<?= $name ?>">
-            <?php if ($slots > 0): ?>
-                <div class="spots-badge <?= $badgeClass ?>">
-                    <i class="fas fa-check-circle"></i>
-                    <?= $slots ?> spots left
-                </div>
-            <?php endif; ?>
+        <div class="card-image-wrapper">
+            <img src="<?= $image ?>" alt="<?= $name ?>" class="card-image">
+            <div class="availability-badge <?= $badgeClass ?>">
+                <i class="fas fa-parking"></i>
+                <span><?= $badgeText ?></span>
+            </div>
         </div>
 
-        <div class="parking-card-content">
-            <h3 class="parking-card-title"><?= $name ?></h3>
-
-            <div class="parking-card-meta">
-                <div class="parking-card-rating">
-                    ⭐ <?= $rating ?>
-                    <?php if ($review > 0): ?>
-                        <span class="count">(<?= $review ?>)</span>
-                    <?php endif; ?>
+        <div class="card-content-wrapper">
+            <div class="card-header">
+                <h3 class="card-title"><?= $name ?></h3>
+                <div class="card-address">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span><?= htmlspecialchars($spot['alamat_tempat'] ?? 'Alamat tidak tersedia') ?></span>
                 </div>
-                <span class="meta-divider">•</span>
-                <div class="parking-card-distance">
-                    <i class="fas fa-walking"></i> 9 min (0.4 mi)
+                
+                <?php if (!empty($spot['vehicle_availability'])): ?>
+                    <div class="vehicle-badges">
+                        <?php foreach ($spot['vehicle_availability'] as $vehicle): ?>
+                            <?php 
+                                $vehicleClass = '';
+                                $vehicleIcon = 'fa-parking';
+                                
+                                if (stripos($vehicle['nama_jenis'], 'motor') !== false) {
+                                    $vehicleClass = 'vehicle-motor';
+                                    $vehicleIcon = 'fa-motorcycle';
+                                } elseif (stripos($vehicle['nama_jenis'], 'mobil') !== false) {
+                                    $vehicleClass = 'vehicle-mobil';
+                                    $vehicleIcon = 'fa-car';
+                                }
+                            ?>
+                            <div class="vehicle-badge <?= $vehicleClass ?>">
+                                <i class="fas <?= $vehicleIcon ?>"></i>
+                                <span><?= htmlspecialchars($vehicle['nama_jenis']) ?> · <?= $vehicle['available_count'] ?> slot</span>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+                
+                <div class="card-meta-row">
+                    <?php if ($rating > 0): ?>
+                        <div class="rating-badge">
+                            <i class="fas fa-star"></i>
+                            <span class="rating-value"><?= $rating ?></span>
+                            <?php if ($review > 0): ?>
+                                <span class="review-count">(<?= $review ?>)</span>
+                            <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
+                    <div class="distance-info">
+                        <i class="fas fa-walking"></i>
+                        <span>9 min</span>
+                    </div>
                 </div>
             </div>
 
-            <div class="parking-card-footer">
-                <div class="parking-card-price">
-                    <div class="price-amount">
-                        Rp <?= number_format($price, 0, ',', '.') ?>
-                    </div>
-                    <div class="price-label">Subtotal</div>
+            <div class="card-footer">
+                <div class="price-section">
+                    <div class="price-value">Rp <?= number_format($price, 0, ',', '.') ?></div>
+                    <div class="price-unit">per hour</div>
                 </div>
 
-                <div class="parking-card-actions">
+                <div class="card-actions">
                     <button class="btn-card-details"
-                            data-card-id="<?= $id ?>">
+                            data-card-id="<?= $id ?>"
+                            onclick="event.stopPropagation(); openBookingModal(<?= $id ?>)">
                         Details
                     </button>
-                    <a href="<?= $baseUrl ?>/pages/booking.php?id=<?= $id ?>"
-                       class="btn-card-book">
-                        Book Now
-                    </a>
+                    <?php if ($isFull): ?>
+                        <button class="btn-card-book btn-disabled"
+                                disabled
+                                aria-disabled="true"
+                                onclick="event.stopPropagation()">
+                            Fully Booked
+                        </button>
+                    <?php else: ?>
+                        <a href="<?= $baseUrl ?>/pages/booking.php?id=<?= $id ?>"
+                           class="btn-card-book"
+                           onclick="event.stopPropagation()">
+                            Book Now
+                        </a>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

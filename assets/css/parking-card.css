@@ -1,210 +1,427 @@
 /* =========================================
-   PARKING CARD COMPONENT – FINAL CLEAN
+   PARKING CARD - HORIZONTAL LAYOUT
+   Image left, content right, clean & balanced
 ========================================= */
 
 :root {
     --spark-yellow: #FFE100;
-    --spark-blue: #0066FF;
+    --spark-yellow-dark: #E5CA00;
+    --spark-black: #1a1a1a;
     --card-bg: #ffffff;
-    --text-dark: #222222;
-    --text-gray: #666666;
-    --text-light: #999999;
-    --border-color: #e5e5e5;
+    --card-border: #e5e7eb;
+    --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    --card-shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.12);
+    --text-primary: #111827;
+    --text-secondary: #6b7280;
+    --text-muted: #9ca3af;
+    --success-green: #10b981;
+    --warning-orange: #f59e0b;
+    --danger-red: #ef4444;
+    --star-yellow: #fbbf24;
 }
 
-/* ================= CONTAINER ================= */
-.parking-cards-container {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    padding: 20px;
-    background: #f5f5f5;
-    overflow-y: auto;
-    max-height: calc(100vh - 140px);
-}
-
-/* ================= CARD ================= */
+/* ================= CARD CONTAINER (HORIZONTAL FLEX) ================= */
 .parking-card {
     background: var(--card-bg);
-    border-radius: 16px;
+    border: 1px solid var(--card-border);
+    border-radius: 4px;
     overflow: hidden;
-    border: 3px solid transparent;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(0,0,0,.08);
+
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    /* WAJIB */
+
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--card-shadow);
 }
 
-.parking-card:hover,
+
+.parking-card:hover {
+    border-color: var(--spark-yellow);
+    box-shadow: var(--card-shadow-hover);
+    transform: translateY(-1px);
+}
+
 .parking-card.active {
     border-color: var(--spark-yellow);
-    box-shadow: 0 8px 24px rgba(0,0,0,.15);
+    box-shadow: 0 0 0 3px rgba(255, 225, 0, 0.2);
 }
 
-/* ================= IMAGE ================= */
-.parking-card-image {
+/* ================= IMAGE SECTION (FIXED HEIGHT - NO STRETCHING) ================= */
+.card-image-wrapper {
     position: relative;
-    height: 180px;
-    background: #f0f0f0;
+    flex-shrink: 0;
+    margin: 8px;
+    width: 160px;
+    height: 170px;
+    /* FIXED & IDEAL */
     overflow: hidden;
+    background: #e5e7eb;
+    border-radius: 2px 0 0 2px;
+    display: flex;
+    /* WAJIB */
+    align-items: center;
+    justify-content: center;
 }
 
-.parking-card-image img {
+.card-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform .3s ease;
+    object-position: center;
+    display: block;
+    transition: transform 0.25s ease;
 }
 
-.parking-card:hover .parking-card-image img {
+
+.parking-card:hover .card-image {
     transform: scale(1.05);
 }
 
-/* ================= BADGE ================= */
-.spots-badge {
+/* ================= AVAILABILITY BADGE (GREEN/RED STATES) ================= */
+.availability-badge {
     position: absolute;
-    bottom: 12px;
-    left: 12px;
-    padding: 6px 14px;
-    border-radius: 8px;
-    font-size: 12px;
-    font-weight: 700;
+    top: 8px;
+    left: 8px;
+    padding: 4px 8px;
+    border-radius: 2px;
     display: flex;
     align-items: center;
-    gap: 6px;
-    background: var(--spark-yellow);
-    color: #000;
-    box-shadow: 0 2px 8px rgba(0,0,0,.2);
+    gap: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
-.spots-badge.warning { background: #ff9800; color: #fff; }
-.spots-badge.danger  { background: #ff5252; color: #fff; }
+.availability-badge i {
+    font-size: 8px;
+}
 
-/* ================= CONTENT ================= */
-.parking-card-content {
-    padding: 16px;
+/* AVAILABLE STATE - GREEN */
+.availability-badge.badge-available {
+    background: #22c55e;
+    color: #ffffff;
+}
+
+.availability-badge.badge-available i {
+    color: #ffffff;
+}
+
+/* FULL STATE - RED */
+.availability-badge.badge-full {
+    background: #ef4444;
+    color: #ffffff;
+}
+
+.availability-badge.badge-full i {
+    color: #ffffff;
+}
+
+/* ================= CONTENT WRAPPER (RIGHT SIDE - FLEXIBLE) ================= */
+.card-content-wrapper {
     display: flex;
     flex-direction: column;
+    flex: 1;
+    padding: 16px;
     gap: 12px;
+    min-width: 0;
 }
 
-.parking-card-title {
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: var(--text-dark);
-    line-height: 1.3;
+/* ================= HEADER SECTION ================= */
+.card-header {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.card-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.4;
     margin: 0;
     display: -webkit-box;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
 
-/* ================= META ================= */
-.parking-card-meta {
+/* ================= ADDRESS ================= */
+.card-address {
     display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: .85rem;
-    color: var(--text-gray);
+    align-items: flex-start;
+    gap: 5px;
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.4;
 }
 
-.parking-card-rating {
+.card-address i {
+    font-size: 10px;
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+.card-address span {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* ================= VEHICLE BADGES ================= */
+.vehicle-badges {
     display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 4px;
+    align-items: center;
+}
+
+.vehicle-badge {
+    display: inline-flex;
     align-items: center;
     gap: 4px;
+    padding: 4px 10px;
+    border-radius: 2px;
+    font-size: 10px;
     font-weight: 600;
-    color: var(--text-dark);
+    white-space: nowrap;
 }
 
-.parking-card-rating .star { color: #fbbf24; }
-.parking-card-rating .count { color: var(--text-gray); }
+.vehicle-badge i {
+    font-size: 9px;
+}
 
-.meta-divider { color: #ddd; }
+/* Motor badge - Light Blue */
+.vehicle-badge.vehicle-motor {
+    background: #dbeafe;
+    color: #1e40af;
+}
 
-.parking-card-distance {
+.vehicle-badge.vehicle-motor i {
+    color: #2563eb;
+}
+
+/* Mobil badge - Light Orange */
+.vehicle-badge.vehicle-mobil {
+    background: #fed7aa;
+    color: #9a3412;
+}
+
+.vehicle-badge.vehicle-mobil i {
+    color: #ea580c;
+}
+
+.card-meta-row {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 10px;
+    font-size: 12px;
 }
 
-/* ================= FOOTER ================= */
-.parking-card-footer {
+/* ================= RATING ================= */
+.rating-badge {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    color: var(--text-secondary);
+}
+
+.rating-badge i {
+    color: var(--star-yellow);
+    font-size: 11px;
+}
+
+.rating-value {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 12px;
+}
+
+.review-count {
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 400;
+}
+
+/* ================= DISTANCE ================= */
+.distance-info {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    color: var(--text-secondary);
+    font-weight: 400;
+}
+
+.distance-info i {
+    font-size: 10px;
+    color: var(--text-muted);
+}
+
+/* ================= FOOTER SECTION ================= */
+.card-footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-top: 12px;
-    border-top: 1px solid var(--border-color);
-    gap: 12px;
+    padding-top: 10px;
+    border-top: 1px solid #f3f4f6;
+    margin-top: auto;
+    gap: 10px;
 }
 
-.parking-card-price {
+/* ================= PRICE SECTION ================= */
+.price-section {
     display: flex;
     flex-direction: column;
+    gap: 1px;
 }
 
-.price-amount {
-    font-size: 1.2rem;
-    font-weight: 800;
-    color: var(--text-dark);
+.price-value {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.2;
 }
 
-.price-label {
-    font-size: .75rem;
-    color: var(--text-light);
+.price-unit {
+    font-size: 10px;
+    color: var(--text-muted);
+    font-weight: 400;
 }
 
-/* ================= ACTIONS ================= */
-.parking-card-actions {
+/* ================= ACTION BUTTONS ================= */
+.card-actions {
     display: flex;
-    gap: 8px;
+    gap: 10px;
+    align-items: center;
 }
 
 .btn-card-details {
     background: transparent;
-    border: none;
-    color: var(--spark-blue);
-    padding: 8px 16px;
-    border-radius: 8px;
-    font-size: .85rem;
-    font-weight: 600;
+    border: 1px solid var(--card-border);
+    color: var(--text-secondary);
+    padding: 7px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
     cursor: pointer;
-    transition: .2s;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    font-family: inherit;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .btn-card-details:hover {
-    background: #f0f7ff;
+    background: #f9fafb;
+    border-color: var(--text-secondary);
+    color: var(--text-primary);
 }
 
 .btn-card-book {
-    background: var(--spark-blue);
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-size: .85rem;
+    background: var(--spark-yellow);
+    color: var(--spark-black);
+    border: 1px solid var(--spark-yellow);
+    padding: 7px 14px;
+    border-radius: 6px;
+    font-size: 12px;
     font-weight: 700;
     cursor: pointer;
-    transition: .2s;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 32px;
 }
 
 .btn-card-book:hover {
-    background: #0052cc;
-    transform: scale(1.05);
+    background: var(--spark-yellow-dark);
+    border-color: var(--spark-yellow-dark);
+    box-shadow: 0 2px 6px rgba(255, 225, 0, 0.25);
+}
+
+/* Disabled button (Fully Booked) */
+.btn-card-book.btn-disabled {
+    background: #e5e7eb;
+    color: #9ca3af;
+    border-color: #e5e7eb;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.btn-card-book.btn-disabled:hover {
+    background: #e5e7eb;
+    border-color: #e5e7eb;
+    box-shadow: none;
+    transform: none;
+}
+
+/* ================= CONTAINER ================= */
+.parking-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    overflow-y: auto;
+    background: #f9fafb;
 }
 
 /* ================= RESPONSIVE ================= */
 @media (max-width: 768px) {
-    .parking-card-footer {
+    .parking-card {
         flex-direction: column;
-        align-items: stretch;
     }
 
-    .parking-card-actions {
+    .card-image-wrapper {
+        width: 100%;
+        height: 160px;
+        min-height: 160px;
+    }
+
+    .card-footer {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .price-section {
+        align-items: center;
+    }
+
+    .card-actions {
         width: 100%;
     }
 
     .btn-card-details,
     .btn-card-book {
         flex: 1;
+        text-align: center;
+        justify-content: center;
     }
+}
+
+/* ================= ANIMATIONS ================= */
+@keyframes cardPulse {
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 225, 0, 0.4);
+    }
+
+    50% {
+        box-shadow: 0 0 0 6px rgba(255, 225, 0, 0);
+    }
+}
+
+.parking-card.map-focused {
+    animation: cardPulse 1s ease-in-out;
 }
