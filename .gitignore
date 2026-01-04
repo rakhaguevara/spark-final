@@ -1,0 +1,54 @@
+# Environment & Config
+.env
+.env.local
+config/database.local.php
+
+# Uploads & User Generated Content
+uploads/profile/*
+!uploads/profile/.gitkeep
+uploads/tickets/*
+!uploads/tickets/.gitkeep
+
+# IDE & Editor
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+error_log
+php_errors.log
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.bak
+*.swp
+*~
+
+# Composer (if used)
+vendor/
+composer.lock
+
+# Node modules (if used)
+node_modules/
+package-lock.json
+yarn.lock
+
+# Database backups
+*.sql.gz
+*.sql.bak
+backup/
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Desktop.ini

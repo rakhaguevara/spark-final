@@ -28,7 +28,18 @@ $vehicleTypeFilter = $_GET['vehicle_type'] ?? null;
 $cityFilter = $_GET['city'] ?? null;
 $dateFilter = $_GET['date'] ?? null;
 
+// Check if foto_tempat column exists
+$has_foto_tempat = false;
+try {
+    $check_cols = $pdo->query("SHOW COLUMNS FROM tempat_parkir LIKE 'foto_tempat'");
+    $has_foto_tempat = $check_cols->rowCount() > 0;
+} catch (PDOException $e) {
+    // Column doesn't exist, continue without it
+}
+
 // Build SQL query with optional vehicle type filter
+$foto_select = $has_foto_tempat ? "tp.foto_tempat," : "NULL as foto_tempat,";
+
 $sql = "
     SELECT 
         tp.id_tempat,
@@ -39,7 +50,7 @@ $sql = "
         tp.harga_per_jam,
         tp.jam_buka,
         tp.jam_tutup,
-        tp.foto_tempat,
+        {$foto_select}
         COUNT(sp.id_slot) as total_slot,
         SUM(CASE WHEN sp.status_slot = 'available' THEN 1 ELSE 0 END) as slot_tersedia,
         COALESCE(AVG(ut.rating), 4.5) as avg_rating,
