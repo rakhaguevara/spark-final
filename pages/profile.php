@@ -177,7 +177,7 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
 
                     <!-- Profile Picture Section -->
                     <form action="<?= BASEURL ?>/actions/profile-handler.php" method="POST" enctype="multipart/form-data" id="imageForm">
-                        <input type="hidden" name="action" value="upload_image">
+                        <input type="hidden" name="form_action" value="upload_image">
                         <div class="profile-picture-section">
                             <div class="profile-avatar-large" id="avatarPreview">
                                 <?php if (!empty($user['profile_image'])): ?>
@@ -207,7 +207,7 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
 
                     <!-- Profile Form -->
                     <form action="<?= BASEURL ?>/actions/profile-handler.php" method="POST" id="profileForm">
-                        <input type="hidden" name="action" value="update_profile">
+                        <input type="hidden" name="form_action" value="update_profile">
                         
                         <div class="form-grid">
                             <!-- Full Name -->
@@ -475,7 +475,7 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
 
     <!-- Remove Image Form (Hidden) -->
     <form id="removeImageForm" action="<?= BASEURL ?>/actions/profile-handler.php" method="POST" style="display: none;">
-        <input type="hidden" name="action" value="remove_image">
+        <input type="hidden" name="form_action" value="remove_image">
     </form>
 
     <script src="<?= BASEURL ?>/assets/js/sidebar-toggle.js"></script>

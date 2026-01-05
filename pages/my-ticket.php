@@ -74,11 +74,23 @@ foreach ($bookings as $booking) {
     <link rel="icon" type="image/png" href="<?= BASEURL ?>/assets/img/logo.png">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="<?= BASEURL ?>/assets/css/loading-overlay.css">
     <link rel="stylesheet" href="<?= BASEURL ?>/assets/css/dashboard-user.css">
     <link rel="stylesheet" href="<?= BASEURL ?>/assets/css/my-ticket.css">
 </head>
 
 <body>
+    <!-- LOADING OVERLAY -->
+    <div class="page-loader">
+        <div class="loader-content">
+            <div class="loader-logo">
+                <img src="<?= BASEURL ?>/assets/img/logo.png" alt="SPARK">
+                <span class="loader-logo-text">SPARK</span>
+            </div>
+            <div class="loader-spinner"></div>
+            <div class="loader-text">Loading...</div>
+        </div>
+    </div>
     <!-- NAVBAR -->
     <nav class="dashboard-navbar">
         <a href="<?= BASEURL ?>/pages/dashboard.php" class="brand-wrapper">
@@ -91,7 +103,10 @@ foreach ($bookings as $booking) {
         </div>
 
         <div class="user-actions">
-            <button class="icon-btn" title="Notifications"><i class="fas fa-bell"></i></button>
+            <a href="<?= BASEURL ?>/pages/notifications.php" class="icon-btn" title="Notifications" style="position: relative; text-decoration: none; color: inherit;">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge" id="notificationBadge" style="display: none;">0</span>
+            </a>
             <div class="profile-chip">
                 <div class="profile-avatar">
                     <?php if (!empty($user['profile_image'])): ?>
@@ -516,5 +531,7 @@ foreach ($bookings as $booking) {
         });
     </script>
     <script src="<?= BASEURL ?>/assets/js/sidebar-toggle.js"></script>
+    <script src="<?= BASEURL ?>/assets/js/notification-badge.js"></script>
+    <script src="<?= BASEURL ?>/assets/js/page-loader.js"></script>
 </body>
 </html>

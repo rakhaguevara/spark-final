@@ -198,6 +198,7 @@ function getParkingFacilities($jam_buka, $jam_tutup)
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link rel="stylesheet" href="<?= BASEURL ?>/assets/css/loading-overlay.css">
     <link rel="stylesheet" href="<?= BASEURL ?>/assets/css/dashboard-user.css">
     <link rel="stylesheet" href="<?= BASEURL ?>/assets/css/parking-card.css">
     <link rel="stylesheet" href="<?= BASEURL ?>/assets/css/map-markers.css">
@@ -205,6 +206,18 @@ function getParkingFacilities($jam_buka, $jam_tutup)
 </head>
 
 <body>
+
+    <!-- LOADING OVERLAY -->
+    <div class="page-loader">
+        <div class="loader-content">
+            <div class="loader-logo">
+                <img src="<?= BASEURL ?>/assets/img/logo.png" alt="SPARK">
+                <span class="loader-logo-text">SPARK</span>
+            </div>
+            <div class="loader-spinner"></div>
+            <div class="loader-text">Loading...</div>
+        </div>
+    </div>
 
     <!-- NAVBAR -->
     <nav class="dashboard-navbar">
@@ -225,9 +238,10 @@ function getParkingFacilities($jam_buka, $jam_tutup)
 
         <!-- Right Side: User Actions -->
         <div class="user-actions">
-            <!-- Mobile: Profile Icon Only. Desktop: Chip -->
-            <button class="icon-btn mobile-hidden" title="Notifications"><i class="fas fa-bell"></i></button>
-
+            <a href="<?= BASEURL ?>/pages/notifications.php" class="icon-btn" title="Notifications" style="position: relative; text-decoration: none; color: inherit;">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge" id="notificationBadge" style="display: none;">0</span>
+            </a>
             <div class="profile-chip">
                 <div class="profile-avatar">
                     <?php if (!empty($user['profile_image'])): ?>
@@ -431,6 +445,8 @@ function getParkingFacilities($jam_buka, $jam_tutup)
     <script src="<?= BASEURL ?>/assets/js/dashboard-filters.js"></script>
     <script src="<?= BASEURL ?>/assets/js/search-popup.js"></script>
     <script src="<?= BASEURL ?>/assets/js/mobile-interaction.js"></script>
+    <script src="<?= BASEURL ?>/assets/js/notification-badge.js"></script>
+    <script src="<?= BASEURL ?>/assets/js/page-loader.js"></script>
 </body>
 
 </html>
