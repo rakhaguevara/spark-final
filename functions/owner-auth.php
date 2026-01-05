@@ -2,18 +2,21 @@
 require_once __DIR__ . '/../config/app.php';
 require_once __DIR__ . '/../config/database.php';
 
-function startSession(): void {
+function startSession(): void
+{
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }
 }
 
-function isOwnerLoggedIn(): bool {
+function isOwnerLoggedIn(): bool
+{
     startSession();
     return isset($_SESSION['owner_id']);
 }
 
-function getCurrentOwner() {
+function getCurrentOwner()
+{
     if (!isOwnerLoggedIn()) return null;
 
     $pdo = getDBConnection();
@@ -29,7 +32,8 @@ function getCurrentOwner() {
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
-function requireOwnerLogin() {
+function requireOwnerLogin()
+{
     startSession();
     if (!isOwnerLoggedIn()) {
         header('Location: ' . BASEURL . '/owner/login.php');
@@ -37,7 +41,8 @@ function requireOwnerLogin() {
     }
 }
 
-function logoutOwner() {
+function logoutOwner()
+{
     startSession();
     unset($_SESSION['owner_id']);
     unset($_SESSION['owner']);

@@ -28,48 +28,64 @@ $recent_owners = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Owner Module - Quick Start Dashboard</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 40px 20px;
         }
-        .container { max-width: 1200px; margin: 0 auto; }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
         h1 {
             color: white;
             text-align: center;
             margin-bottom: 10px;
             font-size: 32px;
         }
+
         .subtitle {
-            color: rgba(255,255,255,0.9);
+            color: rgba(255, 255, 255, 0.9);
             text-align: center;
             margin-bottom: 40px;
             font-size: 16px;
         }
+
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 20px;
             margin-bottom: 30px;
         }
+
         .card {
             background: white;
             border-radius: 12px;
             padding: 24px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             transition: all 0.3s;
         }
+
         .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
         }
+
         .card h2 {
             color: #333;
             font-size: 18px;
@@ -78,29 +94,34 @@ $recent_owners = $stmt->fetchAll(PDO::FETCH_ASSOC);
             align-items: center;
             gap: 10px;
         }
+
         .card p {
             color: #666;
             font-size: 14px;
             line-height: 1.6;
             margin-bottom: 15px;
         }
+
         .stat-number {
             font-size: 42px;
             font-weight: 700;
             color: #667eea;
             margin-bottom: 5px;
         }
+
         .stat-label {
             font-size: 12px;
             color: #999;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
+
         .button-group {
             display: flex;
             flex-direction: column;
             gap: 10px;
         }
+
         .btn {
             padding: 12px 18px;
             border: none;
@@ -113,29 +134,36 @@ $recent_owners = $stmt->fetchAll(PDO::FETCH_ASSOC);
             font-size: 14px;
             display: inline-block;
         }
+
         .btn-primary {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
         }
+
         .btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
         }
+
         .btn-secondary {
             background: #f0f0f0;
             color: #333;
         }
+
         .btn-secondary:hover {
             background: #e0e0e0;
         }
+
         .btn-success {
             background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
             color: white;
         }
+
         .btn-success:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(46, 204, 113, 0.3);
         }
+
         .feature-list {
             background: #f0f8ff;
             border-left: 4px solid #3498db;
@@ -144,10 +172,12 @@ $recent_owners = $stmt->fetchAll(PDO::FETCH_ASSOC);
             margin-bottom: 15px;
             font-size: 13px;
         }
+
         .feature-list li {
             margin-bottom: 6px;
             color: #2c3e50;
         }
+
         .status-badge {
             display: inline-block;
             padding: 4px 12px;
@@ -155,19 +185,23 @@ $recent_owners = $stmt->fetchAll(PDO::FETCH_ASSOC);
             font-size: 12px;
             font-weight: 600;
         }
+
         .status-badge.active {
             background: #d4edda;
             color: #155724;
         }
+
         .status-badge.warning {
             background: #fff3cd;
             color: #856404;
         }
+
         .table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 12px;
         }
+
         .table th {
             background: #f5f5f5;
             padding: 10px;
@@ -177,21 +211,26 @@ $recent_owners = $stmt->fetchAll(PDO::FETCH_ASSOC);
             border-bottom: 2px solid #e0e0e0;
             font-size: 13px;
         }
+
         .table td {
             padding: 10px;
             border-bottom: 1px solid #e0e0e0;
             font-size: 13px;
             color: #555;
         }
+
         .table tr:hover {
             background: #f9f9f9;
         }
+
         .icon {
             font-size: 24px;
         }
+
         .full-width {
             grid-column: 1 / -1;
         }
+
         .highlight {
             background: linear-gradient(135deg, #fff5e6 0%, #ffe6cc 100%);
             border-left: 4px solid #f39c12;
@@ -199,9 +238,11 @@ $recent_owners = $stmt->fetchAll(PDO::FETCH_ASSOC);
             border-radius: 6px;
             margin-bottom: 20px;
         }
+
         .highlight strong {
             color: #d68910;
         }
+
         code {
             background: #f4f4f4;
             padding: 2px 6px;
@@ -211,6 +252,7 @@ $recent_owners = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>🔐 Owner Parkir Module Dashboard</h1>
@@ -434,4 +476,5 @@ $recent_owners = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </div>
 </body>
+
 </html>

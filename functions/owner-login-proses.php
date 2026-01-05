@@ -63,7 +63,6 @@ try {
     $_SESSION['success'] = 'Login berhasil! Selamat datang ' . $owner['nama_pengguna'];
     header('Location: ' . BASEURL . '/owner/dashboard.php');
     exit;
-
 } catch (PDOException $e) {
     error_log('OWNER LOGIN ERROR: ' . $e->getMessage());
     $_SESSION['error'] = 'Terjadi kesalahan sistem. Silakan coba lagi.';

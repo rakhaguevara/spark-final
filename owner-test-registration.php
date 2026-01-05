@@ -14,36 +14,55 @@ $test_nama_parkir = "Test Parkir Unit " . $timestamp;
 ?>
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Owner Registration Test</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 40px 20px;
         }
-        .container { max-width: 900px; margin: 0 auto; }
-        h1 { color: white; text-align: center; margin-bottom: 40px; }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
         .card {
             background: white;
             border-radius: 12px;
             padding: 30px;
             margin-bottom: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
         }
+
         h2 {
             color: #333;
             border-bottom: 3px solid #667eea;
             padding-bottom: 12px;
             margin-bottom: 20px;
         }
+
         .form-group {
             margin-bottom: 15px;
         }
+
         label {
             display: block;
             margin-bottom: 8px;
@@ -51,6 +70,7 @@ $test_nama_parkir = "Test Parkir Unit " . $timestamp;
             color: #555;
             font-size: 14px;
         }
+
         input {
             width: 100%;
             padding: 12px;
@@ -59,16 +79,19 @@ $test_nama_parkir = "Test Parkir Unit " . $timestamp;
             font-size: 14px;
             transition: all 0.3s;
         }
+
         input:focus {
             outline: none;
             border-color: #667eea;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
+
         .button-group {
             display: flex;
             gap: 10px;
             margin-top: 20px;
         }
+
         button {
             padding: 12px 24px;
             border: none;
@@ -78,23 +101,28 @@ $test_nama_parkir = "Test Parkir Unit " . $timestamp;
             transition: all 0.3s;
             font-size: 14px;
         }
+
         .btn-primary {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             flex: 1;
         }
+
         .btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
         }
+
         .btn-secondary {
             background: #f0f0f0;
             color: #333;
             flex: 1;
         }
+
         .btn-secondary:hover {
             background: #e0e0e0;
         }
+
         .info-box {
             background: #f0f8ff;
             border-left: 4px solid #3498db;
@@ -104,6 +132,7 @@ $test_nama_parkir = "Test Parkir Unit " . $timestamp;
             font-size: 14px;
             color: #2c3e50;
         }
+
         .success-box {
             background: #e6ffe6;
             border-left: 4px solid #2ecc71;
@@ -112,6 +141,7 @@ $test_nama_parkir = "Test Parkir Unit " . $timestamp;
             margin-bottom: 15px;
             color: #27ae60;
         }
+
         code {
             background: #f4f4f4;
             padding: 2px 6px;
@@ -119,6 +149,7 @@ $test_nama_parkir = "Test Parkir Unit " . $timestamp;
             font-family: monospace;
             font-size: 13px;
         }
+
         .instructions {
             background: #fff9e6;
             border-left: 4px solid #f39c12;
@@ -128,10 +159,17 @@ $test_nama_parkir = "Test Parkir Unit " . $timestamp;
             font-size: 14px;
             line-height: 1.6;
         }
-        ol { margin-left: 20px; }
-        li { margin-bottom: 8px; }
+
+        ol {
+            margin-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>🔐 Owner Registration Feature Test</h1>
@@ -269,4 +307,5 @@ $test_nama_parkir = "Test Parkir Unit " . $timestamp;
         });
     </script>
 </body>
+
 </html>

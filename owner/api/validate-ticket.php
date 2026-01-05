@@ -63,7 +63,7 @@ try {
             VALUES (?, ?, ?, ?, ?, NOW())
         ");
         $stmt->execute([$owner['id_pengguna'], $parking_id, $booking_id, 'unknown', 'invalid']);
-        
+
         $response['message'] = 'Token QR tidak valid - Tiket palsu atau expired';
         $response['status'] = 'invalid';
         echo json_encode($response);
@@ -107,7 +107,6 @@ try {
         'booking_id' => $booking_id,
         'parking_id' => $parking_id
     ];
-
 } catch (PDOException $e) {
     error_log('QR VALIDATION ERROR: ' . $e->getMessage());
     $response['message'] = 'Database error';

@@ -12,14 +12,15 @@ if (isOwnerLoggedIn()) {
 ?>
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Owner Login | SPARK</title>
-    
+
     <link rel="icon" type="image/png" href="<?= BASEURL ?>/assets/img/logo.png">
     <link rel="stylesheet" href="<?= BASEURL ?>/assets/css/login-style.css">
-    
+
     <style>
         /* Notification Badge Styles */
         .notification-badge {
@@ -99,6 +100,7 @@ if (isOwnerLoggedIn()) {
                 transform: translateX(400px);
                 opacity: 0;
             }
+
             to {
                 transform: translateX(0);
                 opacity: 1;
@@ -110,6 +112,7 @@ if (isOwnerLoggedIn()) {
                 transform: translateX(0);
                 opacity: 1;
             }
+
             to {
                 transform: translateX(400px);
                 opacity: 0;
@@ -117,9 +120,12 @@ if (isOwnerLoggedIn()) {
         }
 
         @keyframes pulse {
-            0%, 100% {
+
+            0%,
+            100% {
                 box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             }
+
             50% {
                 box-shadow: 0 10px 40px rgba(231, 76, 60, 0.4);
             }
@@ -137,147 +143,149 @@ if (isOwnerLoggedIn()) {
         }
     </style>
 </head>
+
 <body>
 
-<div class="login-container">
-    <div class="login-left">
-        <div class="login-box">
+    <div class="login-container">
+        <div class="login-left">
+            <div class="login-box">
 
-            <!-- SWITCH -->
-            <div class="login-switch">
-                <button type="button" class="switch-btn active">
-                    Owner Login
-                </button>
-                <button type="button" class="switch-btn" 
+                <!-- SWITCH -->
+                <div class="login-switch">
+                    <button type="button" class="switch-btn active">
+                        Owner Login
+                    </button>
+                    <button type="button" class="switch-btn"
                         onclick="window.location.href='<?= BASEURL ?>/owner/register.php'">
-                    Owner Sign Up
-                </button>
+                        Owner Sign Up
+                    </button>
+                </div>
+
+                <h1>Selamat Datang Owner Parkir!</h1>
+                <p class="subtitle">Urus parkiran mu lebih mudah dan fleksibel.</p>
+
+                <!-- NOTIFICATION BADGES -->
+                <?php if (isset($_SESSION['error'])): ?>
+                    <div class="notification-badge error" id="notification-badge">
+                        <svg viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                        </svg>
+                        <div class="notification-content">
+                            <div class="notification-title">Login Gagal</div>
+                            <div class="notification-message"><?= htmlspecialchars($_SESSION['error']) ?></div>
+                        </div>
+                        <button type="button" class="notification-close" onclick="document.getElementById('notification-badge')?.remove()">✕</button>
+                    </div>
+                    <?php unset($_SESSION['error']); ?>
+                <?php endif; ?>
+
+                <?php if (isset($_SESSION['success'])): ?>
+                    <div class="notification-badge success" id="notification-badge">
+                        <svg viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                        </svg>
+                        <div class="notification-content">
+                            <div class="notification-title">✓ Login Berhasil!</div>
+                            <div class="notification-message">Selamat datang, owner parkir!</div>
+                        </div>
+                    </div>
+                    <script>
+                        // Auto redirect to dashboard
+                        setTimeout(() => {
+                            window.location.href = '<?= BASEURL ?>/owner/dashboard.php';
+                        }, 500);
+                    </script>
+                    <?php unset($_SESSION['success']); ?>
+                <?php endif; ?>
+
+                <!-- LOGIN FORM -->
+                <form action="<?= BASEURL ?>/functions/owner-login-proses.php" method="POST">
+
+                    <label>Email Address</label>
+                    <input type="email" name="email" required placeholder="owner@spark.com" autofocus>
+
+                    <div class="password-row">
+                        <label>Password</label>
+                    </div>
+
+                    <input type="password" name="password" required placeholder="Masukkan password anda">
+
+                    <button type="submit" class="btn-primary">Log In</button>
+                </form>
+
+                <p class="signup-text">
+                    Belum punya akun?
+                    <a href="<?= BASEURL ?>/owner/register.php">Daftar sebagai Owner</a>
+                </p>
+
+                <p class="signup-text">
+                    <a href="<?= BASEURL ?>">
+                        <i class="fas fa-arrow-left"></i> Kembali ke Halaman Utama
+                    </a>
+                </p>
             </div>
+        </div>
 
-            <h1>Selamat Datang Owner Parkir!</h1>
-            <p class="subtitle">Urus parkiran mu lebih mudah dan fleksibel.</p>
+        <!-- RIGHT SIDE -->
+        <div class="login-right">
+            <div class="login-bg-slider active"></div>
+            <div class="login-bg-slider next"></div>
 
-            <!-- NOTIFICATION BADGES -->
-            <?php if (isset($_SESSION['error'])): ?>
-                <div class="notification-badge error" id="notification-badge">
-                    <svg viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
-                    </svg>
-                    <div class="notification-content">
-                        <div class="notification-title">Login Gagal</div>
-                        <div class="notification-message"><?= htmlspecialchars($_SESSION['error']) ?></div>
-                    </div>
-                    <button type="button" class="notification-close" onclick="document.getElementById('notification-badge')?.remove()">✕</button>
+            <div class="quote-card">
+                <p class="quote">
+                    "SPARK Owner Panel memudahkan pengelolaan parkiran Anda—dari monitoring ruang parkir,
+                    mengelola tarif, melacak transaksi, hingga menganalisis statistik penggunaan untuk
+                    pengambilan keputusan yang lebih baik."
+                </p>
+                <div class="author">
+                    <strong>SPARK Owner Team</strong>
+                    <span>Mitra Pemilik</span>
+                    <span>SPARK Management System</span>
                 </div>
-                <?php unset($_SESSION['error']); ?>
-            <?php endif; ?>
-
-            <?php if (isset($_SESSION['success'])): ?>
-                <div class="notification-badge success" id="notification-badge">
-                    <svg viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                    </svg>
-                    <div class="notification-content">
-                        <div class="notification-title">✓ Login Berhasil!</div>
-                        <div class="notification-message">Selamat datang, owner parkir!</div>
-                    </div>
-                </div>
-                <script>
-                    // Auto redirect to dashboard
-                    setTimeout(() => {
-                        window.location.href = '<?= BASEURL ?>/owner/dashboard.php';
-                    }, 500);
-                </script>
-                <?php unset($_SESSION['success']); ?>
-            <?php endif; ?>
-
-            <!-- LOGIN FORM -->
-            <form action="<?= BASEURL ?>/functions/owner-login-proses.php" method="POST">
-
-                <label>Email Address</label>
-                <input type="email" name="email" required placeholder="owner@spark.com" autofocus>
-
-                <div class="password-row">
-                    <label>Password</label>
-                </div>
-
-                <input type="password" name="password" required placeholder="Masukkan password anda">
-
-                <button type="submit" class="btn-primary">Log In</button>
-            </form>
-
-            <p class="signup-text">
-                Belum punya akun?
-                <a href="<?= BASEURL ?>/owner/register.php">Daftar sebagai Owner</a>
-            </p>
-
-            <p class="signup-text">
-                <a href="<?= BASEURL ?>">
-                    <i class="fas fa-arrow-left"></i> Kembali ke Halaman Utama
-                </a>
-            </p>
+            </div>
         </div>
     </div>
 
-    <!-- RIGHT SIDE -->
-    <div class="login-right">
-        <div class="login-bg-slider active"></div>
-        <div class="login-bg-slider next"></div>
+    <!-- BACKGROUND SLIDE SCRIPT -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const images = [
+                '<?= BASEURL ?>/assets/img/login1.jpg',
+                '<?= BASEURL ?>/assets/img/login2.jpg',
+                '<?= BASEURL ?>/assets/img/login3.jpg'
+            ];
 
-        <div class="quote-card">
-            <p class="quote">
-                "SPARK Owner Panel memudahkan pengelolaan parkiran Anda—dari monitoring ruang parkir, 
-                mengelola tarif, melacak transaksi, hingga menganalisis statistik penggunaan untuk 
-                pengambilan keputusan yang lebih baik."
-            </p>
-            <div class="author">
-                <strong>SPARK Owner Team</strong>
-                <span>Mitra Pemilik</span>
-                <span>SPARK Management System</span>
-            </div>
-        </div>
-    </div>
-</div>
+            let index = 0;
+            let active = document.querySelector('.login-bg-slider.active');
+            let next = document.querySelector('.login-bg-slider.next');
 
-<!-- BACKGROUND SLIDE SCRIPT -->
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const images = [
-            '<?= BASEURL ?>/assets/img/login1.jpg',
-            '<?= BASEURL ?>/assets/img/login2.jpg',
-            '<?= BASEURL ?>/assets/img/login3.jpg'
-        ];
+            active.style.backgroundImage = `url(${images[index]})`;
 
-        let index = 0;
-        let active = document.querySelector('.login-bg-slider.active');
-        let next = document.querySelector('.login-bg-slider.next');
+            setInterval(() => {
+                const nextIndex = (index + 1) % images.length;
+                next.style.backgroundImage = `url(${images[nextIndex]})`;
 
-        active.style.backgroundImage = `url(${images[index]})`;
+                active.classList.add('slide-out');
+                next.classList.add('slide-in');
 
-        setInterval(() => {
-            const nextIndex = (index + 1) % images.length;
-            next.style.backgroundImage = `url(${images[nextIndex]})`;
+                setTimeout(() => {
+                    active.classList.remove('slide-out');
+                    next.classList.remove('slide-in');
 
-            active.classList.add('slide-out');
-            next.classList.add('slide-in');
+                    active.classList.remove('active');
+                    active.classList.add('next');
 
-            setTimeout(() => {
-                active.classList.remove('slide-out');
-                next.classList.remove('slide-in');
+                    next.classList.remove('next');
+                    next.classList.add('active');
 
-                active.classList.remove('active');
-                active.classList.add('next');
+                    [active, next] = [next, active];
+                    index = nextIndex;
+                }, 800);
 
-                next.classList.remove('next');
-                next.classList.add('active');
-
-                [active, next] = [next, active];
-                index = nextIndex;
-            }, 800);
-
-        }, 4000);
-    });
-</script>
+            }, 4000);
+        });
+    </script>
 
 </body>
+
 </html>

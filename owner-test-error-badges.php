@@ -49,33 +49,51 @@ $test_results[] = [
 ?>
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Error Badge Testing - Owner Registration</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 40px 20px;
         }
-        .container { max-width: 1000px; margin: 0 auto; }
-        h1 { color: white; text-align: center; margin-bottom: 40px; }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
         .card {
             background: white;
             border-radius: 12px;
             padding: 30px;
             margin-bottom: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
         }
+
         h2 {
             color: #333;
             border-bottom: 3px solid #667eea;
             padding-bottom: 12px;
             margin-bottom: 20px;
         }
+
         .test-scenario {
             background: #f9f9f9;
             border-left: 4px solid #667eea;
@@ -85,53 +103,63 @@ $test_results[] = [
             cursor: pointer;
             transition: all 0.3s;
         }
+
         .test-scenario:hover {
             background: #f0f0f0;
             border-left-color: #764ba2;
             transform: translateX(5px);
         }
+
         .test-scenario h3 {
             color: #333;
             font-size: 16px;
             margin-bottom: 6px;
         }
+
         .test-scenario p {
             color: #666;
             font-size: 13px;
             margin-bottom: 10px;
         }
+
         .test-form {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 15px;
             margin-top: 10px;
         }
+
         .form-group {
             display: flex;
             flex-direction: column;
         }
+
         .form-group label {
             font-size: 12px;
             font-weight: 600;
             color: #555;
             margin-bottom: 4px;
         }
+
         .form-group input {
             padding: 8px;
             border: 1px solid #ddd;
             border-radius: 4px;
             font-size: 13px;
         }
+
         .form-group input:focus {
             outline: none;
             border-color: #667eea;
             box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
         }
+
         .button-group {
             display: flex;
             gap: 10px;
             margin-top: 10px;
         }
+
         button {
             padding: 8px 16px;
             border: none;
@@ -141,27 +169,32 @@ $test_results[] = [
             font-size: 13px;
             transition: all 0.3s;
         }
+
         .btn-test {
             background: #667eea;
             color: white;
             flex: 1;
         }
+
         .btn-test:hover {
             background: #5568d3;
             transform: translateY(-1px);
             box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
         }
+
         .badge-demo {
             margin-top: 20px;
             padding-top: 20px;
             border-top: 2px solid #e0e0e0;
         }
+
         .demo-title {
             color: #333;
             font-weight: 700;
             margin-bottom: 15px;
             font-size: 16px;
         }
+
         .demo-item {
             background: linear-gradient(135deg, rgba(230, 126, 34, 0.1) 0%, rgba(192, 57, 43, 0.1) 100%);
             border: 1px solid #e74c3c;
@@ -169,16 +202,20 @@ $test_results[] = [
             padding: 15px;
             margin-bottom: 15px;
         }
+
         .demo-item strong {
             color: #c0392b;
         }
+
         .success-demo {
             background: linear-gradient(135deg, rgba(46, 204, 113, 0.1) 0%, rgba(39, 174, 96, 0.1) 100%);
             border-color: #2ecc71;
         }
+
         .success-demo strong {
             color: #27ae60;
         }
+
         .feature-list {
             background: #f0f8ff;
             border-left: 4px solid #3498db;
@@ -189,13 +226,16 @@ $test_results[] = [
             line-height: 1.8;
             color: #2c3e50;
         }
+
         .feature-list ul {
             margin-left: 20px;
             margin-top: 10px;
         }
+
         .feature-list li {
             margin-bottom: 8px;
         }
+
         .note {
             background: #fff9e6;
             border-left: 4px solid #f39c12;
@@ -207,6 +247,7 @@ $test_results[] = [
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>🔐 Error Badge Testing - Owner Registration</h1>
@@ -246,10 +287,10 @@ $test_results[] = [
 
                         <div class="form-group">
                             <label>Konfirmasi Password</label>
-                            <input type="password" name="confirm_password" value="<?php 
-                                // For test 2, use different password
-                                echo ($test['name'] === 'Password Tidak Cocok') ? 'DifferentPass99' : htmlspecialchars($test['password']);
-                            ?>" required>
+                            <input type="password" name="confirm_password" value="<?php
+                                                                                    // For test 2, use different password
+                                                                                    echo ($test['name'] === 'Password Tidak Cocok') ? 'DifferentPass99' : htmlspecialchars($test['password']);
+                                                                                    ?>" required>
                         </div>
 
                         <div class="form-group">
@@ -341,4 +382,5 @@ $test_results[] = [
         </div>
     </div>
 </body>
+
 </html>
