@@ -87,7 +87,6 @@ try {
     $_SESSION['success'] = 'Registrasi berhasil! Silakan login.';
     header('Location: ' . BASEURL . '/owner/login.php');
     exit;
-
 } catch (PDOException $e) {
     error_log('OWNER REGISTER ERROR: ' . $e->getMessage());
     $_SESSION['error'] = 'Terjadi kesalahan sistem. Silakan coba lagi.';

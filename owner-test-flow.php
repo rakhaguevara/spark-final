@@ -194,14 +194,14 @@ try {
         WHERE dp.role_pengguna = 3
         ORDER BY dp.id_pengguna DESC
     ");
-    
+
     $owners = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
+
     if (count($owners) > 0) {
         echo "<div class='test-item pass'>";
         echo count($owners) . " Owner(s) found in database <span class='badge pass'>OK</span>";
         echo "</div>";
-        
+
         echo "<table>";
         echo "<tr><th>ID</th><th>Nama</th><th>Email</th><th>Role</th><th>Parkir</th></tr>";
         foreach ($owners as $owner) {
@@ -281,9 +281,9 @@ if (file_exists($register_file)) {
     echo "<div class='test-item pass'>";
     echo "✅ Registration handler exists: $register_file <span class='badge pass'>OK</span>";
     echo "</div>";
-    
+
     $content = file_get_contents($register_file);
-    
+
     // Check for key features
     $checks = [
         'password_hash' => 'Password hashing',
@@ -291,7 +291,7 @@ if (file_exists($register_file)) {
         'INSERT INTO data_pengguna' => 'Owner data insertion',
         'owner_parkir' => 'Parking data insertion'
     ];
-    
+
     foreach ($checks as $check => $label) {
         if (stripos($content, $check) !== false) {
             echo "<div class='test-item pass'>";
@@ -319,9 +319,9 @@ if (file_exists($login_file)) {
     echo "<div class='test-item pass'>";
     echo "✅ Login handler exists: $login_file <span class='badge pass'>OK</span>";
     echo "</div>";
-    
+
     $content = file_get_contents($login_file);
-    
+
     // Check for key features
     $checks = [
         'password_verify' => 'Password verification',
@@ -329,7 +329,7 @@ if (file_exists($login_file)) {
         'role_pengguna = 3' => 'Owner role check',
         '\$_SESSION' => 'Session management'
     ];
-    
+
     foreach ($checks as $check => $label) {
         if (stripos($content, $check) !== false) {
             echo "<div class='test-item pass'>";
@@ -387,4 +387,3 @@ echo "
 </body>
 </html>
 ";
-?>
