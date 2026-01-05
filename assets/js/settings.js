@@ -143,6 +143,9 @@ function submitProfileForm() {
 
     fetch(form.action, {
         method: 'POST',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        },
         body: formData
     })
         .then(response => response.json())
@@ -205,6 +208,9 @@ function submitPasswordForm() {
 
     fetch(form.action, {
         method: 'POST',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        },
         body: formData
     })
         .then(response => response.json())

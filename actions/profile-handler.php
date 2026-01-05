@@ -19,7 +19,7 @@ $pdo = getDBConnection();
 
 // Handle POST request
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $action = $_POST['action'] ?? '';
+    $action = $_POST['form_action'] ?? '';
 
     try {
         if ($action === 'update_profile') {
