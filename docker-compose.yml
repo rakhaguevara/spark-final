@@ -30,7 +30,7 @@ services:
       - db_data:/var/lib/mysql
       # Auto-import all SQL files on first run (alphabetically)
       - ./database/00-init-complete.sql:/docker-entrypoint-initdb.d/00-init-complete.sql
-      - ./database/dummy_data.sql:/docker-entrypoint-initdb.d/01-dummy-data.sql
+      - ./database/01-production-data.sql:/docker-entrypoint-initdb.d/01-production-data.sql
     ports:
       - "3308:3306"
 

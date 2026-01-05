@@ -234,13 +234,56 @@ CREATE TABLE IF NOT EXISTS `pembayaran_booking` (
   CONSTRAINT `pembayaran_booking_ibfk_1` FOREIGN KEY (`id_booking`) REFERENCES `booking_parkir` (`id_booking`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- Ulasan Tempat Table (Reviews)
+CREATE TABLE IF NOT EXISTS `ulasan_tempat` (
+  `id_ulasan` int(11) NOT NULL AUTO_INCREMENT,
+  `id_tempat` int(11) NOT NULL,
+  `id_pengguna` int(11) NOT NULL,
+  `rating` int(1) NOT NULL CHECK (`rating` >= 1 AND `rating` <= 5),
+  `komentar` text,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id_ulasan`),
+  KEY `id_tempat` (`id_tempat`),
+  KEY `id_pengguna` (`id_pengguna`),
+  CONSTRAINT `ulasan_tempat_ibfk_1` FOREIGN KEY (`id_tempat`) REFERENCES `tempat_parkir` (`id_tempat`) ON DELETE CASCADE,
+  CONSTRAINT `ulasan_tempat_ibfk_2` FOREIGN KEY (`id_pengguna`) REFERENCES `data_pengguna` (`id_pengguna`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Wallet Methods Table (Payment methods storage)
+CREATE TABLE IF NOT EXISTS `wallet_methods` (
+  `id_wallet` int(11) NOT NULL AUTO_INCREMENT,
+  `id_pengguna` int(11) NOT NULL,
+  `type` enum('bank','ewallet','paypal') NOT NULL,
+  `provider_name` varchar(50) NOT NULL COMMENT 'BCA, Mandiri, DANA, OVO, PayPal, etc',
+  `account_identifier` varchar(255) NOT NULL COMMENT 'Masked account number (e.g., ****1234)',
+  `is_default` tinyint(1) NOT NULL DEFAULT 0,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id_wallet`),
+  KEY `fk_wallet_pengguna` (`id_pengguna`),
+  KEY `idx_default` (`id_pengguna`, `is_default`),
+  CONSTRAINT `fk_wallet_pengguna` FOREIGN KEY (`id_pengguna`) REFERENCES `data_pengguna` (`id_pengguna`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Parking Photos Table (Multiple photos per location)
+CREATE TABLE IF NOT EXISTS `parking_photos` (
+  `id_foto` int(11) NOT NULL AUTO_INCREMENT,
+  `id_tempat` int(11) NOT NULL,
+  `foto_path` varchar(255) NOT NULL,
+  `urutan` int(11) DEFAULT 1,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id_foto`),
+  KEY `idx_id_tempat` (`id_tempat`),
+  CONSTRAINT `parking_photos_ibfk_1` FOREIGN KEY (`id_tempat`) REFERENCES `tempat_parkir` (`id_tempat`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 -- ========================================
 -- 2. INSERT DEFAULT ADMIN USER
 -- ========================================
 
 -- Default admin account (password: admin123)
 INSERT INTO `data_pengguna` (`id_pengguna`, `role_pengguna`, `nama_pengguna`, `email_pengguna`, `password_pengguna`, `noHp_pengguna`) 
-VALUES (1, 2, 'Admin SPARK', 'admin@spark.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '081234567890')
+VALUES (1, 2, 'Admin SPARK', 'admin@spark.com', '$2y$10$h6ig7eYcremrVSNcBENfIeOfLhPQeS4ZxuAI7A2e/77GdqLhFwkZ2', '081234567890')
 ON DUPLICATE KEY UPDATE `nama_pengguna` = VALUES(`nama_pengguna`);
 
 -- ========================================

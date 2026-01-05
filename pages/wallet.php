@@ -68,7 +68,10 @@ $payment_methods = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
 
         <div class="user-actions">
-            <button class="icon-btn" title="Notifications"><i class="fas fa-bell"></i></button>
+            <a href="<?= BASEURL ?>/pages/notifications.php" class="icon-btn" title="Notifications" style="position: relative; text-decoration: none; color: inherit;">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge" id="notificationBadge" style="display: none;">0</span>
+            </a>
             <div class="profile-chip">
                 <div class="profile-avatar">
                     <?php if (!empty($user['profile_image'])): ?>
@@ -277,6 +280,7 @@ $payment_methods = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
 
     <script src="<?= BASEURL ?>/assets/js/sidebar-toggle.js"></script>
+    <script src="<?= BASEURL ?>/assets/js/notification-badge.js"></script>
     <script src="<?= BASEURL ?>/assets/js/wallet.js"></script>
 </body>
 </html>

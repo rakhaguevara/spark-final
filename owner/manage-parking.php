@@ -350,6 +350,12 @@ function getParkingPhotos($id_tempat, $pdo)
                                             class="slider-image"
                                             style="display: <?= $idx === 0 ? 'block' : 'none' ?>; width: 100%; height: 180px; object-fit: cover; border-radius: 8px 8px 0 0;">
                                     <?php endforeach; ?>
+                                <?php elseif (!empty($parking['foto_tempat'])): ?>
+                                    <!-- Fallback: Show foto_tempat from tempat_parkir table -->
+                                    <img src="<?= BASEURL ?>/assets/img/<?= htmlspecialchars($parking['foto_tempat']) ?>"
+                                        alt="<?= htmlspecialchars($parking['nama_tempat']) ?>"
+                                        class="slider-image"
+                                        style="display: block; width: 100%; height: 180px; object-fit: cover; border-radius: 8px 8px 0 0;">
                                 <?php else: ?>
                                     <div class="photo-placeholder">
                                         <i class="fas fa-image"></i>
