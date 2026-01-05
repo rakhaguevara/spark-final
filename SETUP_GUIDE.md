@@ -1,116 +1,229 @@
 # 🚀 SPARK - Setup Guide
 
-## Quick Setup After Cloning
+## ⚡ Setup Cepat dengan Docker (Recommended)
 
-Setiap kali clone project ini ke device baru, ikuti langkah berikut:
+Ini adalah cara termudah untuk setup project di laptop orang lain atau device baru.
 
-### 1. Import Database
+### Prerequisites (Install dulu)
+- **Docker Desktop** → https://www.docker.com/products/docker-desktop
+- **Git** → https://git-scm.com/
+
+### Langkah Setup:
+
+#### 1. Clone Repository
 ```bash
-# Import database dasar
+git clone <repo-url> spark
+cd spark
+```
+
+#### 2. Start Docker
+```bash
+# Build dan run semua containers
+docker-compose up -d
+
+# Tunggu ~30 detik sampai database selesai initialize
+```
+
+#### 3. Verify Containers Running
+```bash
+docker-compose ps
+```
+
+Harus ada 3 containers:
+- `spark-app` (PHP/Apache) → Port 8080
+- `spark-db` (MariaDB) → Port 3308
+- `spark-pma` (phpMyAdmin) → Port 8081
+
+#### 4. Database Auto-Import
+Database `spark` akan **otomatis** di-import dari file `spark (2).sql` saat container pertama kali running.
+
+Tunggu ~30 detik untuk proses selesai.
+
+#### 5. Access Aplikasi
+- **Main App:** http://localhost:8080
+- **Admin Panel:** http://localhost:8080/admin/login.php
+- **phpMyAdmin:** http://localhost:8081
+
+#### 6. Test Login (Optional)
+Masuk ke admin panel dengan credentials:
+```
+Email: admin@spark.local
+Password: (lihat di database/000-complete-setup.sql)
+```
+
+### ✅ Setup Selesai!
+Project siap digunakan. Semua data sudah terkoneksi dengan database.
+
+---
+
+## 🔧 Setup Manual (Tanpa Docker)
+
+Jika tidak ingin pakai Docker, ikuti langkah berikut:
+
+### Prerequisites
+- PHP 8.2+
+- MySQL/MariaDB 10.4+
+- Apache/Nginx
+- Composer (optional)
+
+### Langkah Setup:
+
+#### 1. Clone Repository
+```bash
+git clone <repo-url> spark
+cd spark
+```
+
+#### 2. Create Database
+```bash
+# Via MySQL CLI
+mysql -u root -p
+> CREATE DATABASE spark;
+> EXIT;
+
+# Atau buat database kosong, akan di-import di step 3
+```
+
+#### 3. Import Database
+```bash
+# Import script setup lengkap
+mysql -u root -p spark < database/000-complete-setup.sql
+
+# Atau import database lama (jika ada)
 mysql -u root -p spark < "spark (2).sql"
 ```
 
-Atau via phpMyAdmin:
-1. Buat database bernama `spark`
-2. Import file `spark (2).sql`
-
-### 2. Run Database Setup Script
-Ini akan memastikan semua kolom dan tabel yang dibutuhkan ada:
-
-**Via Browser:**
-```
-http://localhost/spark/database/setup.php
-```
-
-**Via CLI:**
-```bash
-php database/setup.php
-```
-
-### 3. Update Config
-Edit `config/database.php` sesuai environment Anda:
+#### 4. Update Config
+Edit `config/database.php` sesuai credentials Anda:
 ```php
 define('DB_HOST', 'localhost');
 define('DB_USER', 'root');
-define('DB_PASS', '');
+define('DB_PASS', 'your-password');
 define('DB_NAME', 'spark');
+define('BASEURL', 'http://localhost/spark/public/');
 ```
 
-### 4. Set Permissions (Linux/Mac)
+#### 5. Set Folder Permissions
+```bash
+# Linux/Mac
+chmod -R 777 uploads/
+chmod -R 777 uploads/profile/
+```
+
+#### 6. Access Aplikasi
+- **Main App:** http://localhost/spark/public/
+- **Admin Panel:** http://localhost/spark/public/admin/login.php
+- **phpMyAdmin:** http://localhost/phpmyadmin
+
+#### 7. Test Login
+```
+Email: admin@spark.local
+Password: (check database/000-complete-setup.sql for hash)
+```
+
+---
+
+## 🐛 Troubleshooting
+
+### ❌ Error: PDOException or "Column not found"
+**Solution:**
+1. Run: `php database/setup.php`
+2. Or import fresh database: `mysql -u root -p spark < database/000-complete-setup.sql`
+3. Check `config/database.php` is configured correctly
+
+### ❌ Error: Images not showing
+**Solution:**
+1. Check image path in browser console (F12)
+2. Verify images exist: `ls assets/img/parking-area/`
+3. Check BASEURL in `config/app.php` has trailing slash
+4. Clear browser cache (Ctrl+Shift+Delete)
+
+### ❌ Docker port already in use
+**Solution:**
+```bash
+# Change ports in docker-compose.yml
+# Or stop conflicting container
+docker-compose down
+docker ps  # check other running containers
+```
+
+### ❌ Database not initialized in Docker
+**Solution:**
+```bash
+# Restart database container
+docker-compose restart db
+# Wait 30 seconds
+# Check if database exists
+docker exec spark-db mysql -u root -prootpassword -e "SHOW DATABASES;"
+```
+
+### ❌ Permission denied on uploads
+**Solution (Docker):**
+```bash
+# Already handled in Dockerfile
+# Check if /var/www/html/uploads is writable
+docker exec spark-app ls -la /var/www/html/uploads
+```
+
+**Solution (Manual):**
 ```bash
 chmod 777 uploads/
 chmod 777 uploads/profile/
+chown www-data:www-data uploads/  # If using Apache
 ```
 
-## 🔧 Troubleshooting
+---
 
-### Error: Column not found
-Jika muncul error "Column not found" (seperti `foto_tempat`):
-1. Jalankan `database/setup.php` 
-2. Script akan otomatis menambahkan kolom yang hilang
+## 📋 Database Schema Checklist
 
-### Error: Table doesn't exist
-1. Pastikan database `spark` sudah dibuat
-2. Import `spark (2).sql`
-3. Jalankan `database/setup.php`
+Semua tabel & kolom ini harus ada:
 
-## 📋 Required Tables & Columns
+### Core Tables
+- ✅ `role_pengguna` - Roles (user, owner, admin)
+- ✅ `data_pengguna` - Users with profile_image
+- ✅ `jenis_kendaraan` - Vehicle types
+- ✅ `tempat_parkir` - Parking locations with foto_tempat, is_plat_required
+- ✅ `slot_parkir` - Parking slots
+- ✅ `kendaraan_pengguna` - User vehicles with plat_hash
+- ✅ `booking_parkir` - Bookings with qr_secret
+- ✅ `pembayaran_booking` - Payments (metode, status)
+- ✅ `harga_parkir` - Pricing
+- ✅ `ulasan_tempat` - Reviews/ratings
+- ✅ `scan_history` - Check-in/out logs
+- ✅ `tiket_digital` - Digital tickets
+- ✅ `dompet_pengguna` - User wallets
+- ✅ `metode_pembayaran` - Payment methods
+- ✅ `history_transaksi` - Transaction history
+- ✅ `qr_session` - QR session tracking
+- ✅ `wallet_methods` - Wallet payment methods
+- ✅ `preferensi_pengguna` - User preferences
 
-Setup script akan memastikan ini semua ada:
+---
 
-### tempat_parkir
-- ✓ `foto_tempat` VARCHAR(255)
-- ✓ `is_plat_required` TINYINT(1)
+## 📁 Project Structure
 
-### kendaraan_pengguna  
-- ✓ `plat_hash` CHAR(64)
-- ✓ `plat_hint` VARCHAR(10)
-
-### booking_parkir
-- ✓ `qr_secret` CHAR(64)
-
-### Additional Tables
-- ✓ `qr_session`
-- ✓ `tickets`
-- ✓ `user_preferences`
-- ✓ `wallet_payment_methods`
-
-### data_pengguna
-- ✓ `profile_image` VARCHAR(255)
-
-## 🐳 Docker Setup (Optional)
-
-Jika menggunakan Docker:
-```bash
-docker-compose up -d
-docker exec -it spark-db mysql -u root -p spark < "spark (2).sql"
-docker exec -it spark-web php database/setup.php
 ```
-
-## 📝 Environment Variables
-
-Buat file `.env` (optional):
-```env
-DB_HOST=localhost
-DB_USER=root
-DB_PASS=
-DB_NAME=spark
-BASEURL=http://localhost/spark
-SECRET_SALT=your-random-secret-salt-here
-```
-
-## ⚡ Quick Commands
-
-```bash
-# Setup everything at once
-php database/setup.php
-
-# Check database status
-mysql -u root -p spark -e "SHOW TABLES;"
-
-# Verify columns
-mysql -u root -p spark -e "SHOW COLUMNS FROM tempat_parkir;"
-```
+spark/
+├── config/               # Configuration files
+│   ├── app.php
+│   ├── config.php
+│   └── database.php
+├── database/             # Database scripts
+│   ├── setup.php
+│   └── 000-complete-setup.sql (MAIN SETUP)
+├── public/               # Web root
+│   ├── index.php
+│   └── admin/
+├── includes/             # Reusable components
+│   └── bookpark.php
+├── functions/            # Helper functions
+├── assets/               # CSS, JS, images
+│   ├── css/
+│   ├── js/
+│   └── img/parking-area/ (parking images)
+├── docker-compose.yml    # Docker configuration
+├── Dockerfile            # Docker build config
+└── .gitignore
 
 ## 🎯 Login Credentials
 

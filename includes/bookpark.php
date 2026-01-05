@@ -7,7 +7,7 @@ require_once __DIR__ . '/../config/database.php'; // kalau DB terpisah
 // Get database connection
 $pdo = getDBConnection();
 
-// Query untuk mengambil data tempat parkir dengan informasi lengkap
+// Query untuk mengambil data tempat parkir dengan informasi lengkap (LIMIT 10 untuk performa)
 $query = "
     SELECT 
         tp.*,
@@ -22,6 +22,7 @@ $query = "
     LEFT JOIN slot_parkir sp ON tp.id_tempat = sp.id_tempat
     GROUP BY tp.id_tempat
     ORDER BY tp.created_at DESC
+    LIMIT 10
 ";
 
 $stmt = $pdo->query($query);
@@ -102,7 +103,7 @@ function getFacilityIcons($tempat) {
                  <div class="bookpark-card-image">
     <?php
         // Tentukan path gambar (TANPA file_exists)
-        $imagePath = BASEURL . '../assets/img/' . ($parkir['foto_tempat'] ?: 'default.jpg');
+        $imagePath = BASEURL . '/assets/img/' . ($parkir['foto_tempat'] ?: 'default.jpg');
         $available = $parkir['available_slots'] ?? 0;
     ?>
 
@@ -111,7 +112,7 @@ function getFacilityIcons($tempat) {
         loading="lazy"
         decoding="async"
         alt="<?= htmlspecialchars($parkir['nama_tempat']) ?>"
-        onerror="this.src='<?= BASEURL ?>../assets/img/default.jpg'"
+        onerror="this.src='<?= BASEURL ?>/assets/img/default.jpg'"
     >
 
     <?php if ($available > 0): ?>

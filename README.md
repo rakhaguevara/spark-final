@@ -2,28 +2,87 @@
 
 Modern web-based parking management system with real-time booking, QR code ticketing, and interactive maps.
 
-## 🚀 Quick Setup (After Cloning)
+## 🚀 Quick Start (Choose One)
 
-### For Linux/Mac:
+### ⭐ Option 1: Docker (Recommended - Easiest)
+
+**Requirements:** Docker Desktop installed
+
+```bash
+# Clone repository
+git clone <repo-url> spark
+cd spark
+
+# Start all services
+docker-compose up -d
+
+# Wait 30 seconds for database initialization
+# Access application
+```
+
+**Access points:**
+- 🌐 App: http://localhost:8080
+- 🔐 Admin: http://localhost:8080/admin/login.php
+- 📊 PhpMyAdmin: http://localhost:8081
+
+**Credentials:**
+- Email: `admin@spark.local`
+- Password: Check `database/000-complete-setup.sql`
+
+**Stop services:**
+```bash
+docker-compose down
+```
+
+---
+
+### 🔧 Option 2: Manual Setup (Local Install)
+
+**Requirements:**
+- PHP 8.0+
+- MySQL/MariaDB
+- Apache/Nginx
+
+```bash
+# Clone repository
+git clone <repo-url> spark
+cd spark
+
+# Create database
+mysql -u root -p
+> CREATE DATABASE spark;
+> exit;
+
+# Import database
+mysql -u root -p spark < database/000-complete-setup.sql
+
+# Update config/database.php with your credentials
+
+# Set folder permissions (Linux/Mac)
+chmod -R 777 uploads/
+```
+
+Access: http://localhost/spark/public/
+
+---
+
+### 🪟 Option 3: Auto Setup Scripts
+
+**For Linux/Mac:**
 ```bash
 bash setup.sh
 ```
 
-### For Windows:
+**For Windows:**
 ```batch
 setup.bat
 ```
 
-### Manual Setup:
-1. Import database: `mysql -u root -p spark < "spark (2).sql"`
-2. Run setup: `php database/setup.php` (or visit `http://localhost/spark/database/setup.php`)
-3. Update `config/database.php` with your credentials
-
-**That's it!** No more "Column not found" errors when cloning to different devices.
+---
 
 ## 📖 Full Documentation
 
-See [SETUP_GUIDE.md](SETUP_GUIDE.md) for detailed instructions.
+See [SETUP_GUIDE.md](SETUP_GUIDE.md) for detailed setup instructions and troubleshooting.
 
 ## ✨ Features
 
