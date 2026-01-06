@@ -191,12 +191,20 @@ foreach ($bookings as $booking) {
                                          style="width: 280px; height: 280px; border: 2px solid #e5e7eb; border-radius: 8px;"
                                          onerror="this.style.display='none'; document.getElementById('qrError').style.display='block';">
                                     <div id="qrError" style="display: none; padding: 20px; background: #f8d7da; border-radius: 8px; text-align: center;">
-                                        <p style="color: #721c24; margin: 0;">QR Code generation failed</p>
+                                        <p style="color: #721c24; margin: 0; font-weight: 600;">QR Code generation failed</p>
                                         <p style="font-size: 12px; margin-top: 8px; color: #666;">Booking ID: <?= $activeBooking['id_booking'] ?></p>
+                                        <button onclick="fixMissingQR()" style="margin-top: 12px; padding: 8px 16px; background: #ef4444; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 13px;">
+                                            <i class="fas fa-sync-alt"></i> Regenerate QR Code
+                                        </button>
                                     </div>
                                 <?php else: ?>
-                                    <div style="padding: 20px; background: #fff3cd; border-radius: 8px; text-align: center;">
-                                        <p style="color: #856404; margin: 0;">No QR token available</p>
+                                    <div id="noQrToken" style="padding: 20px; background: #fff3cd; border-radius: 8px; text-align: center;">
+                                        <i class="fas fa-exclamation-triangle" style="font-size: 48px; color: #f59e0b; margin-bottom: 12px;"></i>
+                                        <p style="color: #856404; margin: 0; font-weight: 600;">QR Token Missing</p>
+                                        <p style="font-size: 13px; margin-top: 8px; color: #92400e;">Generating QR code for your ticket...</p>
+                                        <button onclick="fixMissingQR()" style="margin-top: 12px; padding: 10px 20px; background: #f59e0b; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 500;">
+                                            <i class="fas fa-qrcode"></i> Generate QR Code
+                                        </button>
                                     </div>
                                 <?php endif; ?>
                             </div>
@@ -448,10 +456,51 @@ foreach ($bookings as $booking) {
         const BASEURL = '<?= BASEURL ?>';
         const BOOKING_ID = '<?= $activeBooking['id_booking'] ?? '' ?>';
         const REFRESH_INTERVAL = 10000; // 10 seconds
+        const HAS_QR_TOKEN = <?= !empty($activeBooking['qr_token']) ? 'true' : 'false' ?>;
         
         let countdown = 10;
         let refreshTimer = null;
         let countdownTimer = null;
+        
+        // Fix missing QR token
+        function fixMissingQR() {
+            if (!BOOKING_ID) return;
+            
+            const btn = event?.target;
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
+            }
+            
+            fetch(BASEURL + '/api/fix-missing-qr-tokens.php?booking_id=' + BOOKING_ID, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('QR token fixed:', data.message);
+                    // Reload page to show QR code
+                    location.reload();
+                } else {
+                    alert('Failed to generate QR code: ' + (data.error || 'Unknown error'));
+                    if (btn) {
+                        btn.disabled = false;
+                        btn.innerHTML = '<i class="fas fa-qrcode"></i> Generate QR Code';
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Fix QR error:', error);
+                alert('Error generating QR code. Please try again.');
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-qrcode"></i> Generate QR Code';
+                }
+            });
+        }
         
         function updateCountdown() {
             const timerElement = document.getElementById('qrTimer');
@@ -510,8 +559,14 @@ foreach ($bookings as $booking) {
                 .catch(err => console.error('Status check prevented'));
         }
 
+        // Auto-fix missing QR token on page load
+        if (BOOKING_ID && !HAS_QR_TOKEN) {
+            console.log('QR token missing, auto-fixing...');
+            setTimeout(fixMissingQR, 1000); // Wait 1 second then auto-fix
+        }
+
         // Start auto-refresh if booking exists
-        if (BOOKING_ID) {
+        if (BOOKING_ID && HAS_QR_TOKEN) {
             // Update countdown every second
             countdownTimer = setInterval(updateCountdown, 1000);
             
