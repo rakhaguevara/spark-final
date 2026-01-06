@@ -32,6 +32,10 @@ if (empty($booking_id)) {
 try {
     $pdo = getDBConnection();
     
+    error_log("=== Fix Missing QR Tokens ===");
+    error_log("Booking ID: " . $booking_id);
+    error_log("User ID: " . $user['id_pengguna']);
+    
     // Verify booking belongs to user and is active
     $stmt = $pdo->prepare("
         SELECT id_booking, qr_secret, waktu_selesai, status_booking
@@ -42,30 +46,42 @@ try {
     $booking = $stmt->fetch(PDO::FETCH_ASSOC);
     
     if (!$booking) {
+        error_log("ERROR: Booking not found or doesn't belong to user");
         http_response_code(404);
         echo json_encode(['success' => false, 'error' => 'Booking not found']);
         exit;
     }
+    
+    error_log("Booking found. Status: " . $booking['status_booking']);
+    error_log("Has qr_secret: " . (!empty($booking['qr_secret']) ? 'Yes' : 'No'));
     
     // Generate qr_secret if it doesn't exist
     $qr_secret = $booking['qr_secret'];
     if (empty($qr_secret)) {
         $qr_secret = bin2hex(random_bytes(32));
         
+        error_log("Generating new qr_secret");
+        
         // Update booking with qr_secret
         $stmt = $pdo->prepare("UPDATE booking_parkir SET qr_secret = ? WHERE id_booking = ?");
         $stmt->execute([$qr_secret, $booking_id]);
+        
+        error_log("qr_secret updated. Rows affected: " . $stmt->rowCount());
     }
     
     // Check if QR session already exists
-    $stmt = $pdo->prepare("SELECT id_qr FROM qr_session WHERE id_booking = ?");
+    $stmt = $pdo->prepare("SELECT id_qr, qr_token FROM qr_session WHERE id_booking = ?");
     $stmt->execute([$booking_id]);
     $existing = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    error_log("Existing QR session: " . ($existing ? "Yes (ID: " . $existing['id_qr'] . ")" : "No"));
     
     if ($existing) {
         // QR session exists, just refresh the token
         $new_token = hash('sha256', $qr_secret . $booking_id . time() . bin2hex(random_bytes(16)));
-        $expires_at = date('Y-m-d H:i:s', time() + 10);
+        $expires_at = date('Y-m-d H:i:s', time() + 3600); // 1 hour
+        
+        error_log("Updating existing QR session");
         
         $stmt = $pdo->prepare("
             UPDATE qr_session 
@@ -74,15 +90,28 @@ try {
         ");
         $stmt->execute([$new_token, $expires_at, $booking_id]);
         
+        error_log("QR session updated. Rows affected: " . $stmt->rowCount());
+        
+        // Verify update
+        $verify = $pdo->prepare("SELECT qr_token FROM qr_session WHERE id_booking = ?");
+        $verify->execute([$booking_id]);
+        $verified = $verify->fetch(PDO::FETCH_ASSOC);
+        
+        error_log("Verification: Token saved = " . ($verified && $verified['qr_token'] === $new_token ? 'Yes' : 'No'));
+        
         echo json_encode([
             'success' => true,
             'message' => 'QR token refreshed',
-            'qr_token' => $new_token
+            'qr_token' => substr($new_token, 0, 10) . '...',
+            'booking_id' => $booking_id
         ]);
     } else {
         // Create new QR session
         $qr_token = hash('sha256', $qr_secret . $booking_id . time() . bin2hex(random_bytes(16)));
-        $expires_at = date('Y-m-d H:i:s', time() + 10);
+        $expires_at = date('Y-m-d H:i:s', time() + 3600); // 1 hour
+        
+        error_log("Creating new QR session");
+        error_log("Token: " . substr($qr_token, 0, 10) . "...");
         
         $stmt = $pdo->prepare("
             INSERT INTO qr_session (id_booking, qr_token, expires_at)
@@ -90,15 +119,28 @@ try {
         ");
         $stmt->execute([$booking_id, $qr_token, $expires_at]);
         
+        $insert_id = $pdo->lastInsertId();
+        error_log("QR session created. Insert ID: " . $insert_id);
+        
+        // Verify insert
+        $verify = $pdo->prepare("SELECT id_qr, qr_token FROM qr_session WHERE id_booking = ?");
+        $verify->execute([$booking_id]);
+        $verified = $verify->fetch(PDO::FETCH_ASSOC);
+        
+        error_log("Verification: Record exists = " . ($verified ? 'Yes (ID: ' . $verified['id_qr'] . ')' : 'No'));
+        
         echo json_encode([
             'success' => true,
             'message' => 'QR session created',
-            'qr_token' => $qr_token
+            'qr_token' => substr($qr_token, 0, 10) . '...',
+            'booking_id' => $booking_id,
+            'insert_id' => $insert_id
         ]);
     }
     
 } catch (Exception $e) {
-    error_log("Fix QR error: " . $e->getMessage());
+    error_log("EXCEPTION in fix-missing-qr-tokens: " . $e->getMessage());
+    error_log("Stack trace: " . $e->getTraceAsString());
     http_response_code(500);
     echo json_encode(['success' => false, 'error' => 'Server error: ' . $e->getMessage()]);
 }
